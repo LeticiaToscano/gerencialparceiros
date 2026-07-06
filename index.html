@@ -412,10 +412,10 @@ body::before{
       </div>
     </div>
     <div class="card hero-stats">
-      <div class="hstat"><div class="k">Clientes na base</div><div class="v c" id="stCli">0</div><div class="u">contas operando</div></div>
+      <div class="hstat"><div class="k">Clientes ativos</div><div class="v c" id="stCli">0</div><div class="u">contas operando</div></div>
       <div class="hstat"><div class="k">Contratos no mês</div><div class="v" id="stCon">0</div><div class="u">volume total</div></div>
       <div class="hstat"><div class="k">Bônus bruto</div><div class="v g" id="stBruto">R$ 0</div><div class="u">antes de custos</div></div>
-      <div class="hstat"><div class="k">Ticket médio / cliente</div><div class="v" id="stTicket">R$ 0</div><div class="u">bônus por cliente</div></div>
+      <div class="hstat"><div class="k">Zeragem</div><div class="v g" id="stTicket">R$ 0</div><div class="u">no mês</div></div>
     </div>
 
     <!-- LIQUIDO -->
@@ -427,9 +427,9 @@ body::before{
           <div class="liq-note">Já com todas as deduções aplicadas. Este é o valor que cai, de fato, no bolso do parceiro.</div>
         </div>
         <div class="waterfall">
-          <div class="wf-row gross pos"><span class="wl"><span class="ic">%</span> 50% Receitas</span><span class="wv" id="wfRec">R$ 0</span></div>
+          <div class="wf-row add"><span class="wl"><span class="ic">%</span> Receitas gerais</span><span class="wv" id="wfRec">R$ 0</span></div>
           <div class="wf-row neg"><span class="wl"><span class="ic">−</span> Imposto retido (6,65%)</span><span class="wv" id="wfRetido">R$ 0</span></div>
-          <div class="wf-row neg"><span class="wl"><span class="ic">−</span> 50% Plataformas</span><span class="wv" id="wfPlat">R$ 0</span></div>
+          <div class="wf-row neg"><span class="wl"><span class="ic">−</span> Plataformas</span><span class="wv" id="wfPlat">R$ 0</span></div>
           <div class="wf-row add"><span class="wl"><span class="ic">+</span> Bônus (faixas)</span><span class="wv" id="wfBonus">R$ 0</span></div>
           <div class="wf-row sub"><span class="wl"><span class="ic">=</span> Total</span><span class="wv" id="wfTotal">R$ 0</span></div>
           <div class="wf-row neg"><span class="wl"><span class="ic">−</span> Imposto (19,57%)</span><span class="wv" id="wfImp">R$ 0</span></div>
@@ -634,16 +634,16 @@ const TAX = 0.1957;
 
 /* dados OFICIAIS — valores da coluna "Parceiro" de cada tabelinha (já nos 50%) */
 const PARTNERS = [
-  { id:'50817243', color:'var(--green)', tier:'Alto volume', platName:'Profit Pro',
-    contratos:1067944, zeragem:13210, clientes:537,
+  { id:'50817243', color:'var(--green)', tier:'Alto volume', platName:'Todas as plataformas',
+    contratos:1067944, zeragem:9807, clientes:1015,
     dist:[0,0,0,0,0,1,5,6,10,79],
     t:{rec:49666.79, retido:3302.84, plat:26986.09, bonus:40350.00, total:59727.86, imp:11688.74, liq:48039.12} },
-  { id:'61390582', color:'var(--cyan)', tier:'Consolidado', platName:'Profit Pro',
-    contratos:445492, zeragem:1376, clientes:null,
+  { id:'61390582', color:'var(--cyan)', tier:'Consolidado', platName:'Todas as plataformas',
+    contratos:445492, zeragem:1376, clientes:193,
     dist:null,
     t:{rec:9182.75, retido:610.65, plat:6288.00, bonus:16900.00, total:19184.10, imp:3754.33, liq:15429.77} },
-  { id:'47205169', color:'#38BDF8', tier:'Em expansão', platName:'Profit One',
-    contratos:100759, zeragem:1857, clientes:11,
+  { id:'47205169', color:'#38BDF8', tier:'Em expansão', platName:'Todas as plataformas',
+    contratos:100759, zeragem:1657, clientes:10,
     dist:[0,0,0,0,1,0,0,1,0,1],
     t:{rec:8824.99, retido:586.86, plat:368.02, bonus:4162.65, total:12032.60, imp:2354.78, liq:9677.82} },
 ];
@@ -711,7 +711,7 @@ function render(idx){
   document.getElementById('stCli').textContent = d.clients!=null ? num(d.clients) : '—';
   animateEl(document.getElementById('stCon'), d.contracts, v=>num(v));
   animateEl(document.getElementById('stBruto'), d.bonus, v=>money(v));
-  document.getElementById('stTicket').textContent = d.clients!=null ? money(d.ticket) : '—';
+  animateEl(document.getElementById('stTicket'), d.zeragem, v=>money(v));
 
   // cascata oficial (coluna Parceiro)
   animateEl(document.getElementById('liqBig'), d.liquido, v=>money(v), 1400);
