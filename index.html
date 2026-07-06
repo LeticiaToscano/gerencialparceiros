@@ -3,959 +3,475 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Painel de Parceiros · Seja Livre Investimentos</title>
+<title>Calculadora de Parceiros · Seja Livre Investimentos</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#05070A;
-  --bg-2:#080B10;
-  --panel:#0B0F15;
-  --panel-2:#0E141B;
-  --line:rgba(255,255,255,.06);
-  --line-2:rgba(255,255,255,.10);
-  --txt:#E6EDF3;
-  --txt-2:#9AA7B4;
-  --txt-3:#5D6B78;
-  --green:#00E676;
-  --green-dim:#0BA85B;
-  --cyan:#22D3EE;
-  --gold:#FFB020;
-  --red:#FF5C6C;
+  --bg:#05070A; --bg-2:#080B10; --panel:#0B0F15; --panel-2:#0E141B;
+  --line:rgba(255,255,255,.06); --line-2:rgba(255,255,255,.10);
+  --txt:#E6EDF3; --txt-2:#9AA7B4; --txt-3:#5D6B78;
+  --green:#00E676; --green-dim:#0BA85B; --cyan:#22D3EE; --red:#FF5C6C;
   --glow-green:rgba(0,230,118,.35);
-  --glow-cyan:rgba(34,211,238,.30);
-  --radius:18px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{
-  background:var(--bg);
-  color:var(--txt);
-  font-family:'Inter',sans-serif;
-  min-height:100vh;
-  position:relative;
-  overflow-x:hidden;
-  -webkit-font-smoothing:antialiased;
-}
-body::before{
-  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
-  background:
-    radial-gradient(900px 500px at 88% -8%, rgba(0,230,118,.12), transparent 60%),
-    radial-gradient(800px 600px at -6% 108%, rgba(34,211,238,.10), transparent 60%),
-    radial-gradient(600px 400px at 50% 0%, rgba(255,255,255,.02), transparent 70%);
-}
-.wrap{position:relative;z-index:1;max-width:1240px;margin:0 auto;padding:22px 26px 80px}
-
-/* ---------- TOPBAR ---------- */
-.topbar{
-  position:relative;z-index:50;
-  display:flex;align-items:center;gap:20px;
-  padding:14px 18px;margin-bottom:26px;
-  background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.008));
-  border:1px solid var(--line);border-radius:16px;
-  backdrop-filter:blur(8px);
-}
-.brand{display:flex;align-items:center;gap:12px}
-.brand-mark{
-  width:38px;height:38px;border-radius:11px;display:grid;place-items:center;
-  background:linear-gradient(135deg,var(--green),var(--cyan));
-  box-shadow:0 0 22px var(--glow-green);flex-shrink:0;
-}
-.brand-mark svg{width:20px;height:20px}
-.brand-name{font-family:'Sora';font-weight:700;font-size:15px;letter-spacing:.2px;line-height:1.1}
+body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;min-height:100vh;position:relative;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(900px 500px at 88% -8%,rgba(0,230,118,.10),transparent 60%),radial-gradient(800px 600px at -6% 108%,rgba(34,211,238,.09),transparent 60%)}
+.wrap{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:26px 22px 70px}
+.topbar{display:flex;align-items:center;gap:12px;margin-bottom:26px}
+.brand-mark{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(135deg,var(--green),var(--cyan));box-shadow:0 0 22px var(--glow-green);flex-shrink:0}
+.brand-name{font-family:'Sora';font-weight:700;font-size:15px;line-height:1.1}
 .brand-sub{font-size:11px;color:var(--txt-3);letter-spacing:.4px;text-transform:uppercase}
-.top-spacer{flex:1}
-.live{
-  display:flex;align-items:center;gap:7px;font-size:11px;font-weight:600;letter-spacing:1px;
-  color:var(--green);text-transform:uppercase;padding:6px 12px;border-radius:20px;
-  border:1px solid rgba(0,230,118,.25);background:rgba(0,230,118,.06);
-}
-.live .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 1.6s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-.clock{font-size:12px;color:var(--txt-3);font-variant-numeric:tabular-nums}
-
-/* ---------- SELECTOR ---------- */
-.selector{position:relative}
-.sel-btn{
-  display:flex;align-items:center;gap:12px;cursor:pointer;
-  padding:9px 14px;border-radius:12px;min-width:200px;
-  background:var(--panel-2);border:1px solid var(--line-2);
-  transition:border-color .2s,box-shadow .2s;
-}
-.sel-btn:hover{border-color:rgba(0,230,118,.4);box-shadow:0 0 0 3px rgba(0,230,118,.05)}
-.sel-ico{width:30px;height:30px;border-radius:8px;background:rgba(0,230,118,.10);display:grid;place-items:center;color:var(--green);font-size:13px}
-.sel-txt{flex:1;line-height:1.2}
-.sel-label{font-size:10px;color:var(--txt-3);text-transform:uppercase;letter-spacing:.6px}
-.sel-id{font-family:'Sora';font-weight:600;font-size:14px;letter-spacing:1px}
-.sel-caret{color:var(--txt-3);transition:transform .2s}
-.selector.open .sel-caret{transform:rotate(180deg)}
-.sel-menu{
-  position:absolute;top:calc(100% + 8px);right:0;min-width:240px;z-index:40;
-  background:var(--panel-2);border:1px solid var(--line-2);border-radius:12px;
-  padding:6px;box-shadow:0 24px 60px rgba(0,0,0,.55);
-  opacity:0;visibility:hidden;transform:translateY(-6px);transition:.18s;
-}
-.selector.open .sel-menu{opacity:1;visibility:visible;transform:translateY(0)}
-.sel-opt{
-  display:flex;align-items:center;gap:11px;padding:10px 11px;border-radius:9px;cursor:pointer;transition:background .15s;
-}
-.sel-opt:hover{background:rgba(255,255,255,.04)}
-.sel-opt.active{background:rgba(0,230,118,.08)}
-.sel-opt .odot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.sel-opt .oid{font-family:'Sora';font-weight:600;font-size:13.5px;letter-spacing:1px}
-.sel-opt .ometa{font-size:11px;color:var(--txt-3);margin-left:auto}
-
-/* ---------- HERO ---------- */
-.hero{
-  display:grid;grid-template-columns:1.15fr 1fr;gap:16px;margin-bottom:16px;
-}
-.card{
-  background:linear-gradient(180deg,var(--panel),var(--bg-2));
-  border:1px solid var(--line);border-radius:var(--radius);
-  position:relative;overflow:hidden;
-}
-.hero-id{padding:26px 28px;display:flex;flex-direction:column;justify-content:space-between}
-.hero-id::after{content:"";position:absolute;top:-40%;right:-15%;width:320px;height:320px;
-  background:radial-gradient(circle,rgba(0,230,118,.14),transparent 65%);pointer-events:none}
-.hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
-.eyebrow{font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:var(--txt-3);margin-bottom:10px}
-.hero-idnum{font-family:'Sora';font-weight:800;font-size:40px;letter-spacing:2px;line-height:1}
-.hero-idnum .mask{color:var(--txt-3);-webkit-text-stroke:0;display:inline-block;transform:translateY(.16em);letter-spacing:3px;margin-left:3px}
-.tier{
-  align-self:flex-start;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
-  padding:6px 11px;border-radius:20px;white-space:nowrap;
-}
-.hero-since{margin-top:22px;font-size:13px;color:var(--txt-2)}
-.hero-since b{color:var(--txt);font-weight:600}
-.hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line)}
-.hstat{background:var(--bg-2);padding:20px 22px}
-.hstat .k{font-size:11px;color:var(--txt-3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
-.hstat .v{font-family:'Sora';font-weight:700;font-size:26px;font-variant-numeric:tabular-nums;line-height:1}
-.hstat .v.g{color:var(--green)}
-.hstat .v.c{color:var(--cyan)}
-.hstat .u{font-size:11px;color:var(--txt-3);margin-top:5px}
-
-/* ---------- LIQUIDO HERO ---------- */
-.liquido{
-  grid-column:1 / -1;padding:28px 30px;position:relative;
-  background:
-    linear-gradient(180deg,rgba(0,230,118,.06),rgba(34,211,238,.03)),
-    linear-gradient(180deg,var(--panel),var(--bg-2));
-  border:1px solid rgba(0,230,118,.18);
-}
-.liquido::before{content:"";position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(700px 220px at 80% 120%,rgba(0,230,118,.10),transparent 60%)}
-.liq-grid{position:relative;display:grid;grid-template-columns:1.1fr 1.4fr;gap:34px;align-items:center}
-.liq-label{font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:var(--green);margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.liq-big{font-family:'Sora';font-weight:800;font-size:clamp(40px,5.4vw,66px);line-height:.95;letter-spacing:-1px;
-  background:linear-gradient(100deg,var(--green) 0%,#7CF3B4 45%,var(--cyan) 100%);
-  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-  font-variant-numeric:tabular-nums;}
-.liq-note{margin-top:10px;font-size:12.5px;color:var(--txt-2);max-width:340px}
-/* waterfall */
-.waterfall{display:flex;flex-direction:column;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
-.wf-row{display:flex;align-items:center;justify-content:space-between;padding:15px 20px;background:var(--bg-2)}
-.wf-row .wl{display:flex;align-items:center;gap:11px;font-size:13.5px;color:var(--txt-2)}
-.wf-row .wl .ic{width:26px;height:26px;border-radius:7px;display:grid;place-items:center;font-size:13px}
-.wf-row .wv{font-family:'Sora';font-weight:600;font-size:16px;font-variant-numeric:tabular-nums}
-.wf-row.pos .wv{color:var(--txt)}
-.wf-row.neg .wv{color:var(--red)}
-.wf-row.neg .ic{background:rgba(255,92,108,.10);color:var(--red)}
-.wf-row.gross .ic{background:rgba(34,211,238,.10);color:var(--cyan)}
-.wf-row.add .wv{color:var(--green)}
-.wf-row.add .ic{background:rgba(0,230,118,.10);color:var(--green)}
-.wf-row.sub{background:rgba(255,255,255,.02)}
-.wf-row.sub .wl{color:var(--txt);font-weight:600}
-.wf-row.sub .ic{background:rgba(255,255,255,.06);color:var(--txt)}
-.wf-row.sub .wv{color:var(--txt);font-weight:700}
-.wf-row.total{background:linear-gradient(90deg,rgba(0,230,118,.09),rgba(0,230,118,.02));}
-.wf-row.total .wl{color:var(--txt);font-weight:600}
-.wf-row.total .ic{background:rgba(0,230,118,.14);color:var(--green)}
-.wf-row.total .wv{color:var(--green);font-size:19px;font-weight:700}
-
-/* ---------- SECTION ---------- */
-.section{margin-top:32px}
-.sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:16px}
-.sec-head h2{font-family:'Sora';font-weight:700;font-size:19px;letter-spacing:.2px}
-.sec-head .sh-sub{font-size:12.5px;color:var(--txt-3)}
-.sec-head .sh-line{flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent);align-self:center;margin-left:6px}
-
-/* ---------- DISTRIBUTION (feed) ---------- */
-.feed{overflow:hidden}
-.feed-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 20px;border-bottom:1px solid var(--line)}
-.fh-title{display:flex;align-items:center;gap:12px}
-.fh-ico{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,rgba(0,230,118,.18),rgba(34,211,238,.12));color:var(--green);display:grid;place-items:center}
-.fh-t{font-family:'Sora';font-weight:700;font-size:15px}
-.fh-s{font-size:11.5px;color:var(--txt-3)}
-.feed-badges{display:flex;align-items:center;gap:9px}
-.fb{font-size:12px;color:var(--txt-2);background:rgba(255,255,255,.03);border:1px solid var(--line);padding:5px 11px;border-radius:20px;white-space:nowrap}
-.fb b{color:var(--txt);font-family:'Sora';font-weight:700;font-variant-numeric:tabular-nums}
-/* resumo calmo */
-.dsum{display:grid;grid-template-columns:0.9fr 1.1fr;gap:40px;align-items:center;padding:34px 32px}
-.ds-eyebrow{font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:var(--txt-3);margin-bottom:12px}
-.ds-big{font-family:'Sora';font-weight:800;font-size:clamp(38px,4.6vw,54px);color:var(--green);
-  font-variant-numeric:tabular-nums;line-height:.95;letter-spacing:-1px}
-.ds-meta{margin-top:14px;font-size:13.5px;color:var(--txt-2)}
-.ds-meta b{color:var(--txt);font-weight:600}
-.ds-insight{margin-top:18px;font-size:13px;color:var(--txt-2);line-height:1.55;max-width:280px}
-.ds-insight b{color:var(--green);font-weight:700}
-.comp-bar{display:flex;height:52px;border-radius:13px;overflow:hidden;gap:3px}
-.comp-seg{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:0;
-  width:0;transition:width 1.1s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden}
-.comp-seg .cs-p{font-family:'Sora';font-weight:700;font-size:15px;color:#04150C;font-variant-numeric:tabular-nums;white-space:nowrap}
-.comp-seg .cs-n{font-size:10px;color:rgba(4,21,12,.65);text-transform:uppercase;letter-spacing:.4px;white-space:nowrap}
-.comp-legend{display:flex;gap:26px;margin-top:20px;flex-wrap:wrap}
-.cl-item{display:flex;align-items:center;gap:10px}
-.cl-dot{width:11px;height:11px;border-radius:4px;flex-shrink:0}
-.cl-txt .cl-n{font-size:12px;color:var(--txt-3);text-transform:uppercase;letter-spacing:.4px}
-.cl-txt .cl-v{font-family:'Sora';font-weight:700;font-size:15px;color:var(--txt);font-variant-numeric:tabular-nums;margin-top:2px}
-.cl-txt .cl-v small{color:var(--txt-3);font-weight:400;font-size:12px}
-/* detalhamento expansível */
-.dd-toggle{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:15px;cursor:pointer;
-  border-top:1px solid var(--line);background:transparent;color:var(--txt-2);font-family:'Inter';font-size:13px;font-weight:600;transition:.15s}
-.dd-toggle:hover{color:var(--green);background:rgba(0,230,118,.03)}
-.dd-toggle .cv{transition:transform .25s}
-.dd-toggle.open .cv{transform:rotate(180deg)}
-.dd-toggle.as-head{border-top:none}
-.dd-toggle.as-head.open{border-bottom:1px solid var(--line)}
-.dd-wrap{overflow:hidden;max-height:0;transition:max-height .4s ease}
-.dd-inner{padding:6px 14px 16px}
-.dd-row{display:grid;grid-template-columns:150px 1fr 90px 120px 64px;gap:16px;align-items:center;padding:11px 14px;border-radius:9px}
-.dd-row:hover{background:rgba(255,255,255,.02)}
-.dd-row.head{padding-top:8px;padding-bottom:10px}
-.dd-row.head span{font-size:10.5px;text-transform:uppercase;letter-spacing:.6px;color:var(--txt-3)}
-.dd-row .r{text-align:right}
-.dd-faixa{display:flex;align-items:center;gap:9px}
-.dd-faixa .dddot{width:8px;height:8px;border-radius:3px;flex-shrink:0}
-.dd-faixa span{font-family:'Sora';font-weight:500;font-size:13px;font-variant-numeric:tabular-nums;color:var(--txt)}
-.dd-bar{height:5px;border-radius:3px;background:rgba(255,255,255,.05);overflow:hidden}
-.dd-bar span{display:block;height:100%;width:0;border-radius:3px;transition:width .9s cubic-bezier(.16,1,.3,1)}
-.dd-cli{font-family:'Sora';font-weight:600;font-size:13px;color:var(--txt-2);font-variant-numeric:tabular-nums}
-.dd-row.off{opacity:.55}
-.dd-row.off .dd-sub{color:var(--txt-3)}
-.dd-sub{font-family:'Sora';font-weight:700;font-size:14px;color:var(--green);font-variant-numeric:tabular-nums}
-.dd-pct{font-size:12px;color:var(--txt-3);font-variant-numeric:tabular-nums}
-
-/* ---------- TABLE + PLATFORM SIDE ---------- */
-.two{display:grid;grid-template-columns:1.35fr 1fr;gap:16px;align-items:start}
-.stack{display:flex;flex-direction:column;gap:16px}
-.rule-list{padding:6px 8px}
-.rule-row{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;padding:12px 16px;border-radius:9px;transition:background .15s}
-.rule-row:hover{background:rgba(255,255,255,.02)}
-.rule-row.head{padding-top:6px;padding-bottom:12px}
-.rule-row.head span{font-size:10.5px;text-transform:uppercase;letter-spacing:.6px;color:var(--txt-3)}
-.rule-row.head .r{text-align:right}
-.rule-faixa{display:flex;align-items:center;gap:10px}
-.rule-faixa .rdot{width:8px;height:8px;border-radius:3px;flex-shrink:0;background:var(--green)}
-.rule-faixa .rdot.off{background:var(--txt-3)}
-.rule-faixa span{font-family:'Sora';font-weight:500;font-size:13.5px;font-variant-numeric:tabular-nums;color:var(--txt)}
-.rule-bonus{font-family:'Sora';font-weight:700;font-size:14.5px;color:var(--green);font-variant-numeric:tabular-nums;text-align:right}
-
-.plat{padding:22px 24px;display:flex;flex-direction:column;gap:18px}
-.plat-name{display:flex;align-items:center;gap:12px}
-.plat-name .pico{width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,rgba(34,211,238,.2),rgba(0,230,118,.15));display:grid;place-items:center;color:var(--cyan)}
-.plat-name .pt{font-family:'Sora';font-weight:700;font-size:17px}
-.plat-name .ps{font-size:11.5px;color:var(--txt-3)}
-.plat-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
-.plat-cell{background:var(--bg-2);padding:15px 16px}
-.plat-cell .pk{font-size:10.5px;color:var(--txt-3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
-.plat-cell .pv{font-family:'Sora';font-weight:700;font-size:19px;font-variant-numeric:tabular-nums}
-.plat-total{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-radius:11px;background:rgba(255,92,108,.06);border:1px solid rgba(255,92,108,.16)}
-.plat-total .k{font-size:12.5px;color:var(--txt-2)}
-.plat-total .v{font-family:'Sora';font-weight:700;font-size:18px;color:var(--red);font-variant-numeric:tabular-nums}
-
-/* ---------- PROJECTION ---------- */
-.proj{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.proj-card{padding:22px 22px}
-.proj-card .pph{font-size:12px;color:var(--txt-3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px}
-.proj-card .ppv{font-family:'Sora';font-weight:800;font-size:30px;color:var(--green);font-variant-numeric:tabular-nums;line-height:1}
-.proj-card .ppn{font-size:11.5px;color:var(--txt-3);margin-top:8px}
-.proj-note{font-size:11.5px;color:var(--txt-3);margin-top:12px;text-align:center}
-
-/* ---------- CALCULATOR (wizard) ---------- */
-.calc{border:1px solid rgba(34,211,238,.18);background:linear-gradient(180deg,rgba(34,211,238,.03),var(--bg-2))}
-.wz{max-width:620px;margin:0 auto;padding:30px 26px 34px}
-/* stepper */
-.wz-steps{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:30px}
-.wz-step{display:flex;align-items:center;gap:0}
-.wz-dot{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;flex-shrink:0;
-  font-family:'Sora';font-weight:700;font-size:15px;color:var(--txt-3);
-  background:var(--panel-2);border:1px solid var(--line-2);transition:.25s}
+.card{background:linear-gradient(180deg,var(--panel),var(--bg-2));border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.calc{border:1px solid rgba(34,211,238,.18)}
+.wz{padding:30px 26px 34px}
+.wz-steps{display:flex;align-items:center;justify-content:center;margin-bottom:28px}
+.wz-dot{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;flex-shrink:0;font-family:'Sora';font-weight:700;font-size:15px;color:var(--txt-3);background:var(--panel-2);border:1px solid var(--line-2);transition:.25s}
 .wz-dot.active{background:var(--green);color:#04150C;border-color:var(--green);box-shadow:0 0 18px var(--glow-green)}
 .wz-dot.done{background:rgba(0,230,118,.15);color:var(--green);border-color:rgba(0,230,118,.4)}
 .wz-conn{width:56px;height:2px;background:var(--line-2);margin:0 6px;transition:.25s}
 .wz-conn.done{background:var(--green)}
-/* header */
-.wz-head{text-align:center;margin-bottom:24px}
+.wz-head{text-align:center;margin-bottom:22px}
 .wz-title{font-family:'Sora';font-weight:700;font-size:19px}
 .wz-sub{font-size:13px;color:var(--txt-3);margin-top:6px}
 .wz-sub b{color:var(--green);font-weight:600}
-/* panes */
 .wz-pane{display:none}
-.wz-pane.active{display:block;animation:legin .4s cubic-bezier(.16,1,.3,1)}
-/* asset row */
-.as-row{display:grid;grid-template-columns:130px 1fr auto 34px;gap:12px;align-items:center;margin-bottom:12px}
-.as-sel,.wz-input{background:var(--panel);border:1px solid var(--line-2);border-radius:11px;color:var(--txt);
-  font-family:'Sora';font-weight:600;font-size:15px;padding:14px 14px;transition:border-color .15s;width:100%}
-.as-sel{-webkit-appearance:none;appearance:none;cursor:pointer;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M6 9l6 6 6-6' stroke='%239AA7B4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;background-position:right 14px center;padding-right:34px}
-.wz-input{text-align:left;-moz-appearance:textfield}
+.wz-pane.active{display:block;animation:fade .4s cubic-bezier(.16,1,.3,1)}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1}}
+
+/* IMPORT */
+.imp{border:1px dashed var(--line-2);border-radius:14px;padding:16px;margin-bottom:18px;background:rgba(34,211,238,.02)}
+.imp-h{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--cyan);margin-bottom:14px}
+.drops{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.drop{border:1px solid var(--line-2);border-radius:11px;padding:14px 12px;text-align:center;cursor:pointer;transition:.15s;background:rgba(255,255,255,.01)}
+.drop:hover{border-color:rgba(0,230,118,.4);background:rgba(0,230,118,.03)}
+.drop.loaded{border-color:rgba(0,230,118,.45);background:rgba(0,230,118,.05)}
+.drop .dt{font-family:'Sora';font-weight:600;font-size:13px}
+.drop .ds{font-size:10.5px;color:var(--txt-3);margin-top:4px;word-break:break-word}
+.drop.loaded .dt{color:var(--green)}
+.drop input{display:none}
+.imp-sel{margin-top:12px;display:none}
+.imp-sel.show{display:block}
+.ms-label{font-size:11px;color:var(--txt-3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.ms-list{display:flex;flex-direction:column;gap:6px;max-height:180px;overflow-y:auto;padding-right:2px}
+.ms-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;cursor:pointer;background:var(--panel);border:1px solid var(--line-2);transition:.15s}
+.ms-item:hover{border-color:rgba(0,230,118,.35)}
+.ms-item.on{border-color:rgba(0,230,118,.5);background:rgba(0,230,118,.06)}
+.ms-check{width:18px;height:18px;border-radius:6px;border:1px solid var(--line-2);flex-shrink:0;display:grid;place-items:center;transition:.15s}
+.ms-item.on .ms-check{background:var(--green);border-color:var(--green)}
+.ms-check svg{opacity:0;transition:.15s} .ms-item.on .ms-check svg{opacity:1}
+.ms-name{font-family:'Sora';font-weight:600;font-size:13.5px}
+.exp-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.btn-exp{background:var(--panel);color:var(--txt-2);display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px}
+.btn-exp:hover{color:var(--green);border-color:rgba(0,230,118,.35);background:var(--panel-2)}
+.btn-report{width:100%;margin-top:10px;background:var(--panel);color:var(--txt-2);display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px}
+.btn-report:hover{color:var(--cyan);border-color:rgba(34,211,238,.4);background:var(--panel-2)}
+.select,.wz-input{width:100%;background:var(--panel);border:1px solid var(--line-2);border-radius:11px;color:var(--txt);font-family:'Sora';font-weight:600;font-size:14px;padding:12px 13px;transition:border-color .15s}
+.select{-webkit-appearance:none;appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M6 9l6 6 6-6' stroke='%239AA7B4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:34px}
+.select:focus,.wz-input:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px rgba(34,211,238,.08)}
+.imp-info{font-size:11.5px;color:var(--txt-3);margin-top:10px;text-align:center}
+.imp-info b{color:var(--green)}
+
+/* faixa rows */
+.as-row{display:grid;grid-template-columns:1fr 110px auto 34px;gap:10px;align-items:center;margin-bottom:10px}
+.wz-input{-moz-appearance:textfield}
 .wz-input::-webkit-outer-spin-button,.wz-input::-webkit-inner-spin-button{-webkit-appearance:none}
 .wz-input::placeholder{color:var(--txt-3)}
-.as-sel:focus,.wz-input:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px rgba(34,211,238,.08)}
 .as-pts{font-family:'Sora';font-weight:600;font-size:14px;color:var(--txt-2);white-space:nowrap;text-align:right}
 .as-pts b{color:var(--green);font-weight:700}
-.as-del{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;cursor:pointer;color:var(--txt-3);
-  background:transparent;border:1px solid var(--line);transition:.15s}
+.as-del{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;cursor:pointer;color:var(--txt-3);background:transparent;border:1px solid var(--line);transition:.15s}
 .as-del:hover{color:var(--red);border-color:rgba(255,92,108,.3)}
-.as-add{width:100%;padding:14px;border-radius:12px;cursor:pointer;margin-top:2px;
-  border:1px dashed var(--line-2);background:transparent;color:var(--txt-2);
-  font-family:'Inter';font-weight:600;font-size:13.5px;display:flex;align-items:center;justify-content:center;gap:8px;transition:.15s}
+.as-add{width:100%;padding:13px;border-radius:12px;cursor:pointer;margin-top:2px;border:1px dashed var(--line-2);background:transparent;color:var(--txt-2);font-family:'Inter';font-weight:600;font-size:13px;display:flex;align-items:center;justify-content:center;gap:8px;transition:.15s}
 .as-add:hover{border-color:rgba(0,230,118,.4);color:var(--green)}
-/* total box */
-.wz-total{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;margin-top:18px;border-radius:13px;
-  background:linear-gradient(135deg,rgba(0,230,118,.08),rgba(0,230,118,.02));border:1px solid rgba(0,230,118,.2)}
-.wz-total .k{font-size:14px;color:var(--txt-2)}
-.wz-total .v{font-family:'Sora';font-weight:800;font-size:24px;color:var(--green);font-variant-numeric:tabular-nums}
-/* pontuação grid */
-.wz-tp{margin-top:22px}
+.wz-total{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;margin-top:16px;border-radius:13px;background:linear-gradient(135deg,rgba(0,230,118,.08),rgba(0,230,118,.02));border:1px solid rgba(0,230,118,.2)}
+.wz-total .k{font-size:13px;color:var(--txt-2)}
+.wz-total .k span{font-family:'Sora';font-weight:700;color:var(--txt)}
+.wz-total .v{font-family:'Sora';font-weight:800;font-size:22px;color:var(--green);font-variant-numeric:tabular-nums}
+.wz-tp{margin-top:20px}
 .wz-tp-l{font-size:12px;color:var(--txt-3);margin-bottom:10px}
-.wz-tp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.wz-tp-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
 .tp-cell{background:var(--bg-2);padding:11px 14px;display:flex;align-items:center;justify-content:space-between}
 .tp-cell .tc{font-family:'Sora';font-size:12.5px;color:var(--txt);font-weight:500;font-variant-numeric:tabular-nums}
 .tp-cell .tm{font-family:'Sora';font-weight:700;font-size:13px;color:var(--green)}
-/* params (etapa 2) */
 .wz-fields{display:flex;flex-direction:column;gap:16px}
 .wz-field label{display:block;font-size:11px;color:var(--txt-3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
-.wz-field .suffix{position:relative}
-.wz-field .suffix span{position:absolute;right:16px;top:50%;transform:translateY(-50%);color:var(--txt-3);font-size:13px;pointer-events:none}
-/* result (etapa 3) */
+.suffix{position:relative}
+.suffix span{position:absolute;right:16px;top:50%;transform:translateY(-50%);color:var(--txt-3);font-size:13px;pointer-events:none}
 .wz-res-wf{display:flex;flex-direction:column;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:18px}
 .wz-res-row{display:flex;align-items:center;justify-content:space-between;padding:15px 18px;background:var(--bg-2);font-size:14px}
 .wz-res-row .rk{color:var(--txt-2)}
 .wz-res-row .rv{font-family:'Sora';font-weight:600;font-variant-numeric:tabular-nums}
 .wz-res-row.neg .rv{color:var(--red)}
-.wz-res-row.faixa{background:rgba(34,211,238,.05)}
-.wz-res-row.faixa .rv{color:var(--cyan)}
-.wz-liq{padding:24px;border-radius:15px;text-align:center;
-  background:linear-gradient(135deg,rgba(0,230,118,.12),rgba(34,211,238,.05));border:1px solid rgba(0,230,118,.24)}
+.wz-res-row.faixa{background:rgba(34,211,238,.05)} .wz-res-row.faixa .rv{color:var(--cyan)}
+.wz-liq{padding:24px;border-radius:15px;text-align:center;background:linear-gradient(135deg,rgba(0,230,118,.12),rgba(34,211,238,.05));border:1px solid rgba(0,230,118,.24)}
 .wz-liq .lk{font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:var(--green);margin-bottom:10px}
-.wz-liq .lv{font-family:'Sora';font-weight:800;font-size:42px;color:var(--green);font-variant-numeric:tabular-nums;line-height:1}
-/* nav buttons */
-.wz-nav{display:flex;gap:12px;margin-top:24px}
+.wz-liq .lv{font-family:'Sora';font-weight:800;font-size:40px;color:var(--green);font-variant-numeric:tabular-nums;line-height:1}
+.wz-nav{display:flex;gap:12px;margin-top:22px}
 .btn{font-family:'Inter';font-weight:600;font-size:14px;padding:15px 20px;border-radius:12px;cursor:pointer;transition:.15s;border:1px solid var(--line-2)}
 .btn-primary{flex:1;background:var(--green);color:#04150C;border-color:var(--green);box-shadow:0 6px 20px rgba(0,230,118,.2)}
-.btn-primary:hover{filter:brightness(1.06);box-shadow:0 8px 26px rgba(0,230,118,.3)}
+.btn-primary:hover{filter:brightness(1.06)}
 .btn-ghost{background:var(--panel);color:var(--txt-2)}
 .btn-ghost:hover{color:var(--txt);border-color:var(--line-2);background:var(--panel-2)}
-
-.footer{margin-top:40px;text-align:center;font-size:11.5px;color:var(--txt-3);letter-spacing:.3px}
-.footer b{color:var(--txt-2);font-weight:600}
-
-@media (max-width:940px){
-  .hero,.liq-grid,.two,.proj{grid-template-columns:1fr}
-  .dsum{grid-template-columns:1fr;gap:26px}
-  .dd-row{grid-template-columns:1fr 70px 90px 48px;gap:10px}
-  .dd-bar{display:none}
-  .as-row{grid-template-columns:96px 1fr 34px}
-  .as-pts{grid-column:1 / -1;text-align:left;order:4}
-  .wz-tp-grid{grid-template-columns:1fr}
-  .topbar{flex-wrap:wrap}
-}
-@media (prefers-reduced-motion:reduce){
-  .dfill{transition:none}
-}
+.footer{margin-top:26px;text-align:center;font-size:11.5px;color:var(--txt-3)}
+.footer b{color:var(--txt-2)}
+@media (max-width:560px){.drops,.wz-tp-grid{grid-template-columns:1fr}.as-row{grid-template-columns:1fr 90px 34px}.as-pts{grid-column:1/-1;text-align:left;order:4}}
 </style>
 </head>
 <body>
 <div class="wrap">
-
-  <!-- TOPBAR -->
   <div class="topbar">
-    <div class="brand">
-      <div class="brand-mark">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M3 13.5L9 19L21 5" stroke="#04150C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>
-      <div>
-        <div class="brand-name">Seja Livre Investimentos</div>
-        <div class="brand-sub">Painel de Parceiros · Clube Trader</div>
-      </div>
-    </div>
-    <div class="top-spacer"></div>
-    <div class="clock" id="clock">--:--:--</div>
-    <div class="live"><span class="dot"></span>Ao vivo</div>
-    <div class="selector" id="selector">
-      <div class="sel-btn" id="selBtn">
-        <div class="sel-ico">#</div>
-        <div class="sel-txt">
-          <div class="sel-label">Parceiro</div>
-          <div class="sel-id" id="selId">—</div>
-        </div>
-        <div class="sel-caret">▾</div>
-      </div>
-      <div class="sel-menu" id="selMenu"></div>
-    </div>
+    <div class="brand-mark"><svg viewBox="0 0 24 24" fill="none" width="20" height="20"><path d="M3 13.5L9 19L21 5" stroke="#04150C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="brand-name">Seja Livre Investimentos</div><div class="brand-sub">Calculadora de bonificação</div></div>
   </div>
 
-  <!-- HERO -->
-  <div class="hero">
-    <div class="card hero-id">
-      <div>
-        <div class="hero-top">
-          <div>
-            <div class="eyebrow">Conta do parceiro</div>
-            <div class="hero-idnum" id="heroId">—</div>
-          </div>
-          <div class="tier" id="heroTier">—</div>
-        </div>
-        <div class="hero-since">Ativo desde <b id="heroSince">—</b> · base 100% verificada</div>
+  <div class="card calc">
+    <div class="wz">
+      <div class="wz-steps">
+        <div class="wz-dot active" data-step="1">1</div><div class="wz-conn" data-conn="1"></div>
+        <div class="wz-dot" data-step="2">2</div><div class="wz-conn" data-conn="2"></div>
+        <div class="wz-dot" data-step="3">3</div>
       </div>
-    </div>
-    <div class="card hero-stats">
-      <div class="hstat"><div class="k">Clientes ativos</div><div class="v c" id="stCli">0</div><div class="u">contas operando</div></div>
-      <div class="hstat"><div class="k">Contratos no mês</div><div class="v" id="stCon">0</div><div class="u">volume total</div></div>
-      <div class="hstat"><div class="k">Bônus bruto</div><div class="v g" id="stBruto">R$ 0</div><div class="u">antes de custos</div></div>
-      <div class="hstat"><div class="k">Zeragem</div><div class="v g" id="stTicket">0</div><div class="u">contratos</div></div>
-    </div>
 
-    <!-- LIQUIDO -->
-    <div class="card liquido">
-      <div class="liq-grid">
-        <div>
-          <div class="liq-label">● Bonificação líquida no mês</div>
-          <div class="liq-big" id="liqBig">R$ 0</div>
-          <div class="liq-note">Já com todas as deduções aplicadas. Este é o valor que cai, de fato, no bolso do parceiro.</div>
+      <!-- ETAPA 1 -->
+      <div class="wz-pane active" data-pane="1">
+        <div class="wz-head">
+          <div class="wz-title">Etapa 1 de 3</div>
+          <div class="wz-sub">Importe a planilha ou informe o <b>nº de clientes</b> por faixa</div>
         </div>
-        <div class="waterfall">
-          <div class="wf-row add"><span class="wl"><span class="ic">%</span> Receitas gerais</span><span class="wv" id="wfRec">R$ 0</span></div>
-          <div class="wf-row neg"><span class="wl"><span class="ic">−</span> IR Genial (6,65%)</span><span class="wv" id="wfRetido">R$ 0</span></div>
-          <div class="wf-row neg"><span class="wl"><span class="ic">−</span> Plataformas</span><span class="wv" id="wfPlat">R$ 0</span></div>
-          <div class="wf-row add"><span class="wl"><span class="ic">+</span> Bônus (faixas)</span><span class="wv" id="wfBonus">R$ 0</span></div>
-          <div class="wf-row sub"><span class="wl"><span class="ic">=</span> Total</span><span class="wv" id="wfTotal">R$ 0</span></div>
-          <div class="wf-row neg"><span class="wl"><span class="ic">−</span> IRPJ (19,57%)</span><span class="wv" id="wfImp">R$ 0</span></div>
-          <div class="wf-row total"><span class="wl"><span class="ic">=</span> Líquido do parceiro</span><span class="wv" id="wfLiq">R$ 0</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- TABLE + PLATFORM -->
-  <div class="section">
-    <div class="sec-head">
-      <h2>Regra de bonificação &amp; plataforma</h2>
-      <span class="sh-sub">tabela oficial do Clube Trader · custos contratados</span>
-      <span class="sh-line"></span>
-    </div>
-    <div class="stack">
-      <div class="card">
-        <button class="dd-toggle as-head" id="ruleToggle">
-          <span>Ver tabela de bonificação (Clube Trader)</span>
-          <svg class="cv" width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <div class="dd-wrap" id="ruleWrap">
-          <div class="rule-list">
-            <div class="rule-row head"><span>Contratos operados pelo cliente</span><span class="r">Bônus por cliente</span></div>
-            <div id="ruleRows"></div>
+        <div class="imp">
+          <div class="imp-h"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 16V4m0 12l-4-4m4 4l4-4M4 20h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Importar planilha de operação</div>
+          <div class="drops">
+            <label class="drop" id="dropFut"><div class="dt" id="futT">Futuros</div><div class="ds" id="futS">subir .xlsx</div><input type="file" id="fileFut" accept=".xlsx,.xls,.csv"></label>
+            <label class="drop" id="dropBov"><div class="dt" id="bovT">Bovespa</div><div class="ds" id="bovS">subir .xlsx</div><input type="file" id="fileBov" accept=".xlsx,.xls,.csv"></label>
+          </div>
+          <div class="imp-sel" id="impSel">
+            <div class="ms-label">Selecione uma ou mais bases (parceiros):</div>
+            <div class="ms-list" id="assList"></div>
+            <div class="imp-info" id="impInfo"></div>
           </div>
         </div>
+
+        <div id="asList"></div>
+        <button class="as-add" id="asAdd"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> Adicionar faixa</button>
+        <div class="wz-total"><span class="k"><span id="asTotal">0</span> clientes · bônus bruto:</span><span class="v" id="asTotalBonus">R$ 0</span></div>
+        <div class="wz-tp">
+          <div class="wz-tp-l">Tabela de bonificação (faixa → bônus):</div>
+          <div class="wz-tp-grid" id="tpGrid"></div>
+        </div>
+        <div class="wz-nav"><button class="btn btn-primary" data-go="2">Avançar</button></div>
       </div>
-      <div class="card plat">
-        <div class="plat-name">
-          <div class="pico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="13" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 20h8M12 17v3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></div>
-          <div>
-            <div class="pt" id="platName">—</div>
-            <div class="ps">plataforma contratada</div>
-          </div>
+
+      <!-- ETAPA 2 -->
+      <div class="wz-pane" data-pane="2">
+        <div class="wz-head"><div class="wz-title">Etapa 2 de 3</div><div class="wz-sub">Informe os <b>custos</b> da operação</div></div>
+        <div class="wz-fields">
+          <div class="wz-field"><label>Custo por licença de plataforma</label><div class="suffix"><input class="wz-input" type="number" id="wzUnit" value="280" min="0"><span>R$</span></div></div>
+          <div class="wz-field"><label>Nº de licenças contratadas</label><input class="wz-input" type="number" id="wzQty" value="1" min="0"></div>
+          <div class="wz-field"><label>Imposto sobre o bônus</label><div class="suffix"><input class="wz-input" type="number" id="wzTax" value="19.57" min="0" step="0.01"><span>%</span></div></div>
         </div>
-        <div class="plat-grid">
-          <div class="plat-cell"><div class="pk">Custo total / mês</div><div class="pv" id="platQty">R$ 0</div></div>
-          <div class="plat-cell"><div class="pk">% da receita bruta</div><div class="pv" id="platUnit">0%</div></div>
+        <div class="wz-nav"><button class="btn btn-ghost" data-go="1">Voltar</button><button class="btn btn-primary" data-go="3">Avançar</button></div>
+      </div>
+
+      <!-- ETAPA 3 -->
+      <div class="wz-pane" data-pane="3">
+        <div class="wz-head"><div class="wz-title">Etapa 3 de 3</div><div class="wz-sub">Resultado da simulação</div></div>
+        <div class="wz-res-wf">
+          <div class="wz-res-row faixa"><span class="rk">Clientes no cenário</span><span class="rv" id="wzFaixa">—</span></div>
+          <div class="wz-res-row"><span class="rk">Bônus bruto</span><span class="rv" id="wzBruto">R$ 0</span></div>
+          <div class="wz-res-row neg"><span class="rk">− Plataforma</span><span class="rv" id="wzPlat">R$ 0</span></div>
+          <div class="wz-res-row neg"><span class="rk">− Imposto</span><span class="rv" id="wzImp">R$ 0</span></div>
         </div>
-        <div class="plat-total"><span class="k">Impacto no líquido do parceiro</span><span class="v" id="platTotal">R$ 0</span></div>
+        <div class="wz-liq"><div class="lk">Bonificação líquida simulada</div><div class="lv" id="wzLiq">R$ 0</div></div>
+        <div class="exp-row">
+          <button class="btn btn-exp" id="expCsv"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 16V4m0 12l-4-4m4 4l4-4M4 20h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Exportar clientes (CSV)</button>
+          <button class="btn btn-exp" id="expScen"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2zM17 21v-8H7v8M7 3v5h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg> Salvar cenário</button>
+        </div>
+        <button class="btn btn-report" id="expReport"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 17v-6M12 17v-4M15 17v-8M6 21h12a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg> Relatório por cliente (Sinacor · Barra · Pontos · Valor)</button>
+        <div class="wz-nav"><button class="btn btn-ghost" data-go="2">Voltar</button><button class="btn btn-ghost" id="wzReset">Recomeçar</button></div>
       </div>
     </div>
   </div>
-
-  <!-- DISTRIBUTION -->
-  <div class="section">
-    <div class="card feed">
-      <div class="feed-head">
-        <div class="fh-title">
-          <div class="fh-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 1 0 9 9h-9V3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M14 3.2A9 9 0 0 1 20.8 10H14V3.2Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg></div>
-          <div><div class="fh-t">De onde vem o bônus</div><div class="fh-s">composição por faixa de contratos</div></div>
-        </div>
-        <div class="feed-badges">
-          <span class="fb"><b id="fClientes">0</b> clientes</span>
-          <span class="fb"><b id="fFaixas">0</b> faixas ativas</span>
-          <span class="live"><span class="dot"></span>Live</span>
-        </div>
-      </div>
-      <div class="dsum">
-        <div class="ds-left">
-          <div class="ds-eyebrow">Bônus bruto no mês</div>
-          <div class="ds-big" id="dsBig">R$ 0</div>
-          <div class="ds-meta"><b id="dsCli">0</b> ativos · <b id="dsComBonus">0</b> com bônus · <b id="dsSemBonus">0</b> abaixo de 1.000 pts</div>
-          <div class="ds-insight" id="dsInsight"></div>
-        </div>
-        <div class="ds-right">
-          <div class="comp-bar" id="compBar"></div>
-          <div class="comp-legend" id="compLegend"></div>
-        </div>
-      </div>
-      <button class="dd-toggle" id="ddToggle">
-        <span>Ver detalhamento por faixa</span>
-        <svg class="cv" width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-      <div class="dd-wrap" id="ddWrap">
-        <div class="dd-inner">
-          <div class="dd-row head">
-            <span>Faixa de contratos</span><span>Peso</span><span class="r">Clientes</span><span class="r">Subtotal</span><span class="r">%</span>
-          </div>
-          <div id="ddRows"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- PROJECTION -->
-  <div class="section">
-    <div class="sec-head">
-      <h2>Projeção de líquido acumulado</h2>
-      <span class="sh-sub">mantendo o mesmo volume atual</span>
-      <span class="sh-line"></span>
-    </div>
-    <div class="proj">
-      <div class="card proj-card"><div class="pph">3 meses</div><div class="ppv" id="p3">R$ 0</div><div class="ppn">líquido projetado</div></div>
-      <div class="card proj-card"><div class="pph">6 meses</div><div class="ppv" id="p6">R$ 0</div><div class="ppn">líquido projetado</div></div>
-      <div class="card proj-card"><div class="pph">12 meses</div><div class="ppv" id="p12">R$ 0</div><div class="ppn">líquido projetado</div></div>
-    </div>
-    <div class="proj-note">Projeção linear ilustrativa (líquido do mês × período). Não constitui garantia de resultado.</div>
-  </div>
-
-  <!-- CALCULATOR -->
-  <div class="section">
-    <div class="sec-head">
-      <h2>Simulador de bonificação</h2>
-      <span class="sh-sub">área livre · não altera os dados do parceiro</span>
-      <span class="sh-line"></span>
-    </div>
-    <div class="card calc">
-      <div class="wz">
-        <div class="wz-steps">
-          <div class="wz-step"><div class="wz-dot active" data-step="1">1</div></div>
-          <div class="wz-conn" data-conn="1"></div>
-          <div class="wz-step"><div class="wz-dot" data-step="2">2</div></div>
-          <div class="wz-conn" data-conn="2"></div>
-          <div class="wz-step"><div class="wz-dot" data-step="3">3</div></div>
-        </div>
-
-        <!-- ETAPA 1 -->
-        <div class="wz-pane active" data-pane="1">
-          <div class="wz-head">
-            <div class="wz-title">Etapa 1 de 3</div>
-            <div class="wz-sub">Informe o <b>nº de clientes</b> em cada faixa de contratos</div>
-          </div>
-          <div id="asList"></div>
-          <button class="as-add" id="asAdd"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> Adicionar faixa</button>
-          <div class="wz-total"><span class="k"><span id="asTotal">0</span> clientes · bônus bruto:</span><span class="v" id="asTotalBonus">R$ 0</span></div>
-          <div class="wz-tp">
-            <div class="wz-tp-l">Tabela de bonificação (faixa → bônus):</div>
-            <div class="wz-tp-grid" id="tpGrid"></div>
-          </div>
-          <div class="wz-nav">
-            <button class="btn btn-ghost" id="wzLoad">Carregar parceiro atual</button>
-            <button class="btn btn-primary" data-go="2">Avançar</button>
-          </div>
-        </div>
-
-        <!-- ETAPA 2 -->
-        <div class="wz-pane" data-pane="2">
-          <div class="wz-head">
-            <div class="wz-title">Etapa 2 de 3</div>
-            <div class="wz-sub">Informe os <b>custos</b> da operação</div>
-          </div>
-          <div class="wz-fields">
-            <div class="wz-field"><label>Custo por licença de plataforma</label>
-              <div class="suffix"><input class="wz-input" type="number" id="wzUnit" value="280" min="0"><span>R$</span></div></div>
-            <div class="wz-field"><label>Nº de licenças contratadas</label>
-              <input class="wz-input" type="number" id="wzQty" value="1" min="0"></div>
-            <div class="wz-field"><label>Imposto sobre o bônus</label>
-              <div class="suffix"><input class="wz-input" type="number" id="wzTax" value="19.57" min="0" step="0.01"><span>%</span></div></div>
-          </div>
-          <div class="wz-nav">
-            <button class="btn btn-ghost" data-go="1">Voltar</button>
-            <button class="btn btn-primary" data-go="3">Avançar</button>
-          </div>
-        </div>
-
-        <!-- ETAPA 3 -->
-        <div class="wz-pane" data-pane="3">
-          <div class="wz-head">
-            <div class="wz-title">Etapa 3 de 3</div>
-            <div class="wz-sub">Resultado da simulação</div>
-          </div>
-          <div class="wz-res-wf">
-            <div class="wz-res-row faixa"><span class="rk">Clientes no cenário</span><span class="rv" id="wzFaixa">—</span></div>
-            <div class="wz-res-row"><span class="rk">Bônus bruto</span><span class="rv" id="wzBruto">R$ 0</span></div>
-            <div class="wz-res-row neg"><span class="rk">− Plataforma</span><span class="rv" id="wzPlat">R$ 0</span></div>
-            <div class="wz-res-row neg"><span class="rk">− Imposto</span><span class="rv" id="wzImp">R$ 0</span></div>
-          </div>
-          <div class="wz-liq">
-            <div class="lk">Bonificação líquida simulada</div>
-            <div class="lv" id="wzLiq">R$ 0</div>
-          </div>
-          <div class="wz-nav">
-            <button class="btn btn-ghost" data-go="2">Voltar</button>
-            <button class="btn btn-ghost" id="wzReset">Recomeçar</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="footer">Modelo demonstrativo · <b>Seja Livre Investimentos</b> · dados ilustrativos até a carga das planilhas reais</div>
+  <div class="footer">Calculadora demonstrativa · <b>Seja Livre Investimentos</b></div>
 </div>
 
 <script>
-/* ===================== ENGINE ===================== */
+/* tabela NOVA de bonificação */
 const BRACKETS = [
-  {label:'≥ 500.000',            min:500000, mid:650000, bonus:15750},
-  {label:'300.000 – 499.999',    min:300000, mid:400000, bonus:10500},
-  {label:'150.000 – 299.999',    min:150000, mid:225000, bonus:6000},
-  {label:'100.000 – 149.999',    min:100000, mid:125000, bonus:4500},
-  {label:'75.000 – 99.999',      min:75000,  mid:87500,  bonus:3562.5},
-  {label:'50.000 – 74.999',      min:50000,  mid:62500,  bonus:2500},
-  {label:'25.000 – 49.999',      min:25000,  mid:37500,  bonus:1250},
-  {label:'10.000 – 24.999',      min:10000,  mid:17500,  bonus:500},
-  {label:'5.000 – 9.999',        min:5000,   mid:7500,   bonus:250},
-  {label:'1.000 – 4.999',        min:1000,   mid:2500,   bonus:100},
+  {min:500000, bonus:31500, label:'≥ 500.000'},
+  {min:300000, bonus:21000, label:'300.000 – 499.999'},
+  {min:150000, bonus:12000, label:'150.000 – 299.999'},
+  {min:100000, bonus:9000,  label:'100.000 – 149.999'},
+  {min:75000,  bonus:7125,  label:'75.000 – 99.999'},
+  {min:50000,  bonus:5000,  label:'50.000 – 74.999'},
+  {min:25000,  bonus:2500,  label:'25.000 – 49.999'},
+  {min:10000,  bonus:1000,  label:'10.000 – 24.999'},
+  {min:5000,   bonus:500,   label:'5.000 – 9.999'},
+  {min:1000,   bonus:200,   label:'1.000 – 4.999'},
 ];
-const TAX = 0.1957;
-
-/* dados OFICIAIS — valores da coluna "Parceiro" de cada tabelinha (já nos 50%) */
-const PARTNERS = [
-  { id:'50817243', color:'var(--green)', tier:'Alto volume', platName:'Todas as plataformas',
-    contratos:1067944, zeragem:9807, clientes:1015,
-    dist:[0,0,0,0,0,1,5,6,10,79],
-    t:{rec:49666.79, retido:3302.84, plat:26986.09, bonus:40350.00, total:59727.86, imp:11688.74, liq:48039.12} },
-  { id:'61390582', color:'var(--cyan)', tier:'Consolidado', platName:'Todas as plataformas',
-    contratos:445492, zeragem:1376, clientes:193,
-    dist:[0,0,0,1,0,1,1,6,11,29],
-    t:{rec:9182.75, retido:610.65, plat:6288.00, bonus:16900.00, total:19184.10, imp:3754.33, liq:15429.77} },
-  { id:'47205169', color:'#38BDF8', tier:'Em expansão', platName:'Todas as plataformas',
-    contratos:100759, zeragem:1657, clientes:10,
-    dist:[0,0,0,0,1,0,0,1,0,1],
-    t:{rec:8824.99, retido:586.86, plat:368.02, bonus:4162.65, total:12032.60, imp:2354.78, liq:9677.82} },
-];
-
+const brIndexOf = pts => { for(let i=0;i<BRACKETS.length;i++) if(pts>=BRACKETS[i].min) return i; return -1; };
+const MULT = {WIN:1,WDO:2,WSP:1,SOL:3,IND:3,GLD:3,ETR:3,DOL:5,BIT:4,DI1:1};
+const multOf = a => { a=String(a).toUpperCase(); for(const k in MULT) if(a.startsWith(k)) return MULT[k]; return 0; };
 const money = n => 'R$ ' + Math.round(n).toLocaleString('pt-BR');
-const money2 = n => n.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
 const num = n => Math.round(n).toLocaleString('pt-BR');
-const maskId = id => id.slice(0,3) + '*****';
-const C_GREEN=[0,230,118], C_CYAN=[34,211,238];
-const lerpColor=(a,b,t)=>`rgb(${a.map((v,i)=>Math.round(v+(b[i]-v)*t)).join(',')})`;
 
-function compute(p){
-  const t = p.t;
-  let gross=0, faixaClients=0, rows=null;
-  if(p.dist){
-    rows = BRACKETS.map((b,i)=>{
-      const c = p.dist[i]||0;
-      const sub = c*b.bonus;
-      gross += sub; faixaClients += c;
-      return {...b, count:c, sub};
-    });
-  }
-  return {
-    rec:t.rec, retido:t.retido, plat:t.plat, bonus:t.bonus,
-    total:t.total, imp:t.imp, liquido:t.liq,
-    contracts:p.contratos, zeragem:p.zeragem, clients:p.clientes,
-    hasDist:!!p.dist, rows, faixaClients,
-    gross: p.dist ? gross : t.bonus,
-    ticket: p.clientes ? t.bonus/p.clientes : 0
-  };
+/* ---------- LEITOR XLSX PRÓPRIO (sem biblioteca externa) ---------- */
+function colToIdx(ref){ let n=0; for(const ch of ref){ if(ch<'A'||ch>'Z') break; n=n*26+(ch.charCodeAt(0)-64);} return n-1; }
+function unesc(s){ return String(s).replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&apos;/g,"'").replace(/&amp;/g,'&'); }
+async function inflateRaw(bytes){
+  const ds=new DecompressionStream('deflate-raw');
+  return new Uint8Array(await new Response(new Blob([bytes]).stream().pipeThrough(ds)).arrayBuffer());
 }
-
-/* ===================== ANIMAÇÃO ===================== */
-const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-function animateEl(el, to, fmt, dur=1100){
-  if(reduce){ el.textContent = fmt(to); return; }
-  const from = 0, start = performance.now();
-  function step(t){
-    const k = Math.min((t-start)/dur, 1);
-    const e = 1 - Math.pow(1-k, 3);
-    el.textContent = fmt(from + (to-from)*e);
-    if(k<1) requestAnimationFrame(step);
-  }
-  requestAnimationFrame(step);
-}
-
-/* ===================== RENDER PAINEL ===================== */
-let current = 0;
-
-function render(idx){
-  const p = PARTNERS[idx];
-  const d = compute(p);
-
-  // topbar + hero
-  document.getElementById('selId').textContent = maskId(p.id);
-  const hid = document.getElementById('heroId');
-  hid.innerHTML = p.id.slice(0,3) + '<span class="mask">*****</span>';
-  const tier = document.getElementById('heroTier');
-  tier.textContent = p.tier;
-  tier.style.color = p.color;
-  tier.style.background = 'color-mix(in srgb, '+p.color+' 12%, transparent)';
-  tier.style.border = '1px solid color-mix(in srgb, '+p.color+' 30%, transparent)';
-  document.getElementById('heroSince').textContent = 'base verificada';
-
-  document.getElementById('stCli').textContent = d.clients!=null ? num(d.clients) : '—';
-  animateEl(document.getElementById('stCon'), d.contracts, v=>num(v));
-  animateEl(document.getElementById('stBruto'), d.bonus, v=>money(v));
-  animateEl(document.getElementById('stTicket'), d.zeragem, v=>num(v));
-
-  // cascata oficial (coluna Parceiro)
-  animateEl(document.getElementById('liqBig'), d.liquido, v=>money(v), 1400);
-  animateEl(document.getElementById('wfRec'), d.rec, v=>money(v));
-  animateEl(document.getElementById('wfRetido'), d.retido, v=>'− '+money(v));
-  animateEl(document.getElementById('wfPlat'), d.plat, v=>'− '+money(v));
-  animateEl(document.getElementById('wfBonus'), d.bonus, v=>'+ '+money(v));
-  animateEl(document.getElementById('wfTotal'), d.total, v=>money(v));
-  animateEl(document.getElementById('wfImp'), d.imp, v=>'− '+money(v));
-  animateEl(document.getElementById('wfLiq'), d.liquido, v=>money(v), 1400);
-
-  // distribution (resumo por faixas) — só quando há detalhamento por faixa
-  const dsInsight = document.getElementById('dsInsight');
-  const bar = document.getElementById('compBar');
-  const leg = document.getElementById('compLegend');
-  const ddRows = document.getElementById('ddRows');
-  document.getElementById('dsBig') && animateEl(document.getElementById('dsBig'), d.bonus, v=>money(v), 1400);
-  document.getElementById('dsCli').textContent = d.clients!=null ? num(d.clients) : '—';
-  const comBonus = d.hasDist ? d.faixaClients : null;
-  const semBonus = (d.clients!=null && comBonus!=null) ? Math.max(d.clients - comBonus, 0) : null;
-  document.getElementById('dsComBonus').textContent = comBonus!=null ? num(comBonus) : '—';
-  document.getElementById('dsSemBonus').textContent = semBonus!=null ? num(semBonus) : '—';
-
-  if(d.hasDist){
-    const contrib = d.rows.filter(r=>r.sub>0).sort((a,b)=>b.sub-a.sub);
-    const nseg = contrib.length;
-    const buckets = [
-      {name:'Mais de 500 mil contratos', short:'+500 mil', color:'#00E676', pick:r=>r.min>=500000, sub:0, cli:0},
-      {name:'De 100 a 500 mil contratos', short:'100–500 mil', color:'#1FD3C4', pick:r=>r.min>=100000 && r.min<500000, sub:0, cli:0},
-      {name:'Menos de 100 mil contratos', short:'até 100 mil', color:'#22D3EE', pick:r=>r.min<100000, sub:0, cli:0},
-    ];
-    d.rows.forEach(r=>{ const b=buckets.find(x=>x.pick(r)); if(b){ b.sub+=r.sub; b.cli+=r.count; } });
-    const shownB = buckets.filter(b=>b.sub>0);
-    const gb = d.gross || 1;
-    const topB = [...shownB].sort((a,b)=>b.sub-a.sub)[0];
-    dsInsight.innerHTML = topB ? `<b>${(topB.sub/gb*100).toFixed(0)}%</b> do bônus vem de clientes com <b>${topB.name.replace(' contratos','').toLowerCase()} contratos</b> operados.` : '';
-
-    bar.innerHTML=''; leg.innerHTML='';
-    shownB.forEach((t,i)=>{
-      const share = t.sub/gb*100;
-      const seg = document.createElement('div');
-      seg.className='comp-seg'; seg.style.background = t.color;
-      seg.innerHTML = share>8 ? `<span class="cs-p">${share.toFixed(0)}%</span><span class="cs-n">${t.short}</span>` : '';
-      bar.appendChild(seg);
-      setTimeout(()=>{ seg.style.width = share+'%'; }, reduce?0:100+i*60);
-      const li = document.createElement('div'); li.className='cl-item';
-      li.innerHTML = `<span class="cl-dot" style="background:${t.color}"></span>
-        <div class="cl-txt"><div class="cl-n">${t.name}</div>
-        <div class="cl-v">${money(t.sub)} <small>· ${num(t.cli)} clientes</small></div></div>`;
-      leg.appendChild(li);
-    });
-
-    const colors = contrib.map((_,i)=> lerpColor(C_GREEN, C_CYAN, nseg>1 ? i/(nseg-1) : 0));
-    const maxSub = contrib.length ? contrib[0].sub : 1;
-    let ddHtml = contrib.map((r,i)=>{
-      const share = r.sub/gb*100;
-      return `<div class="dd-row">
-        <div class="dd-faixa"><span class="dddot" style="background:${colors[i]}"></span><span>${r.label}</span></div>
-        <div class="dd-bar"><span style="width:${(r.sub/maxSub*100).toFixed(1)}%;background:${colors[i]}"></span></div>
-        <div class="dd-cli r">${num(r.count)}</div>
-        <div class="dd-sub r">${money(r.sub)}</div>
-        <div class="dd-pct r">${share.toFixed(1)}%</div>
-      </div>`;
-    }).join('');
-    // linha dos clientes abaixo de 1.000 pontos (sem bônus)
-    const semBonusN = (d.clients!=null) ? Math.max(d.clients - d.faixaClients, 0) : null;
-    if(semBonusN!=null){
-      ddHtml += `<div class="dd-row off">
-        <div class="dd-faixa"><span class="dddot" style="background:var(--txt-3)"></span><span>abaixo de 1.000 pts</span></div>
-        <div class="dd-bar"></div>
-        <div class="dd-cli r">${num(semBonusN)}</div>
-        <div class="dd-sub r">R$ 0</div>
-        <div class="dd-pct r">—</div>
-      </div>`;
+async function unzipNeeded(bytes){
+  const dv=new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength);
+  let eocd=-1;
+  for(let i=bytes.length-22;i>=0;i--){ if(dv.getUint32(i,true)===0x06054b50){eocd=i;break;} }
+  if(eocd<0) throw new Error('EOCD');
+  const cdOff=dv.getUint32(eocd+16,true), cdCnt=dv.getUint16(eocd+10,true);
+  const out={}; let p=cdOff;
+  for(let n=0;n<cdCnt;n++){
+    if(dv.getUint32(p,true)!==0x02014b50) break;
+    const method=dv.getUint16(p+10,true), compSize=dv.getUint32(p+20,true);
+    const nameLen=dv.getUint16(p+28,true), extraLen=dv.getUint16(p+30,true), commentLen=dv.getUint16(p+32,true);
+    const lOff=dv.getUint32(p+42,true);
+    const name=new TextDecoder().decode(bytes.subarray(p+46,p+46+nameLen));
+    if(/sharedStrings\.xml$|worksheets\/sheet.*\.xml$/i.test(name)){
+      const lNameLen=dv.getUint16(lOff+26,true), lExtraLen=dv.getUint16(lOff+28,true);
+      const ds=lOff+30+lNameLen+lExtraLen;
+      const comp=bytes.subarray(ds,ds+compSize);
+      out[name]= method===0 ? comp : await inflateRaw(comp);
     }
-    ddRows.innerHTML = ddHtml;
-    document.getElementById('fFaixas').textContent = nseg;
-  } else {
-    // parceiro sem detalhamento por faixa carregado
-    dsInsight.innerHTML = 'Bônus consolidado — detalhamento por faixa não carregado para este parceiro.';
-    bar.innerHTML = `<div class="comp-seg" style="width:100%;background:var(--green)"><span class="cs-p">100%</span><span class="cs-n">bônus</span></div>`;
-    leg.innerHTML = `<div class="cl-item"><span class="cl-dot" style="background:var(--green)"></span><div class="cl-txt"><div class="cl-n">Bônus total</div><div class="cl-v">${money(d.bonus)}</div></div></div>`;
-    ddRows.innerHTML = `<div class="dd-row"><div class="dd-faixa"><span>Detalhamento por faixa não disponível</span></div></div>`;
-    document.getElementById('fFaixas').textContent = '—';
+    p+=46+nameLen+extraLen+commentLen;
   }
-  const wrap = document.getElementById('ddWrap');
-  if(document.getElementById('ddToggle').classList.contains('open')) wrap.style.maxHeight = wrap.scrollHeight+'px';
-  document.getElementById('fClientes').textContent = d.clients!=null ? num(d.clients) : '—';
-
-  // platform (valor oficial "50% Plataformas")
-  document.getElementById('platName').textContent = p.platName;
-  document.getElementById('platQty').textContent = money(d.plat);
-  document.getElementById('platUnit').textContent = (d.plat/d.rec*100).toFixed(0)+'%';
-  document.getElementById('platTotal').textContent = '− '+money(d.plat);
-
-  // tabela de regras (mesmo estilo do detalhamento) — dot verde nas faixas com cliente
-  const ruleRows = document.getElementById('ruleRows');
-  ruleRows.innerHTML = BRACKETS.map((b,i)=>`
-    <div class="rule-row">
-      <div class="rule-faixa"><span class="rdot ${(p.dist && p.dist[i]>0)?'':'off'}"></span><span>${b.label}</span></div>
-      <div class="rule-bonus">${money2(b.bonus)}</div>
-    </div>`).join('');
-  const rwrap = document.getElementById('ruleWrap');
-  if(document.getElementById('ruleToggle').classList.contains('open')) rwrap.style.maxHeight = rwrap.scrollHeight+'px';
-
-  // projeção
-  animateEl(document.getElementById('p3'), d.liquido*3, v=>money(v), 1200);
-  animateEl(document.getElementById('p6'), d.liquido*6, v=>money(v), 1200);
-  animateEl(document.getElementById('p12'), d.liquido*12, v=>money(v), 1200);
+  return out;
+}
+async function readXlsx(buf){
+  const bytes=new Uint8Array(buf);
+  const files=await unzipNeeded(bytes);
+  const dec=new TextDecoder();
+  let shared=[];
+  const ssName=Object.keys(files).find(n=>/sharedStrings\.xml$/i.test(n));
+  if(ssName){
+    const xml=dec.decode(files[ssName]);
+    shared=[...xml.matchAll(/<(?:\w+:)?si>([\s\S]*?)<\/(?:\w+:)?si>/g)].map(m=>{
+      const ts=[...m[1].matchAll(/<(?:\w+:)?t[^>]*>([\s\S]*?)<\/(?:\w+:)?t>/g)].map(x=>x[1]);
+      return unesc(ts.join(''));
+    });
+  }
+  const shName=Object.keys(files).sort().find(n=>/worksheets\/sheet1\.xml$/i.test(n))||Object.keys(files).find(n=>/worksheets\/sheet.*\.xml$/i.test(n));
+  const sx=dec.decode(files[shName]);
+  const rows=[];
+  for(const rm of sx.matchAll(/<(?:\w+:)?row[^>]*>([\s\S]*?)<\/(?:\w+:)?row>/g)){
+    const cells=[]; let idx=0;
+    for(const cm of rm[1].matchAll(/<(?:\w+:)?c\b([^>]*?)(?:\/>|>([\s\S]*?)<\/(?:\w+:)?c>)/g)){
+      const attrs=cm[1], inner=cm[2]||'';
+      const rRef=(attrs.match(/r="([A-Z]+)\d+"/)||[])[1];
+      const col = rRef!=null ? colToIdx(rRef) : idx;
+      const t=(attrs.match(/t="([^"]*)"/)||[])[1];
+      let val='';
+      const vM=inner.match(/<(?:\w+:)?v>([\s\S]*?)<\/(?:\w+:)?v>/);
+      const isM=inner.match(/<(?:\w+:)?t[^>]*>([\s\S]*?)<\/(?:\w+:)?t>/);
+      if((t==='inlineStr'||t==='str')&&isM) val=unesc(isM[1]);
+      else if(vM){ val = t==='s' ? (shared[+vM[1]]||'') : unesc(vM[1]); }
+      cells[col]=val; idx=col+1;
+    }
+    rows.push(cells);
+  }
+  return rows;
+}
+// CSV fallback simples
+function parseCSV(text){
+  const sep = (text.split('\n')[0].split(';').length > text.split('\n')[0].split(',').length) ? ';' : ',';
+  return text.split(/\r?\n/).filter(l=>l.length).map(l=>l.split(sep).map(c=>c.replace(/^"|"$/g,'').trim()));
 }
 
-/* ===================== SELETOR ===================== */
-const selector = document.getElementById('selector');
-const selMenu = document.getElementById('selMenu');
-selMenu.innerHTML = PARTNERS.map((p,i)=>`
-  <div class="sel-opt ${i===0?'active':''}" data-i="${i}">
-    <span class="odot" style="background:${p.color};box-shadow:0 0 8px ${p.color}"></span>
-    <span class="oid">${maskId(p.id)}</span>
-    <span class="ometa">${p.clientes!=null ? p.clientes+' clientes' : num(p.contratos)+' contr.'}</span>
-  </div>`).join('');
-document.getElementById('selBtn').addEventListener('click', e=>{ e.stopPropagation(); selector.classList.toggle('open'); });
-document.addEventListener('click', ()=> selector.classList.remove('open'));
-selMenu.querySelectorAll('.sel-opt').forEach(opt=>{
-  opt.addEventListener('click', ()=>{
-    current = +opt.dataset.i;
-    selMenu.querySelectorAll('.sel-opt').forEach(o=>o.classList.remove('active'));
-    opt.classList.add('active');
-    selector.classList.remove('open');
-    render(current);
-  });
-});
+/* ---------- IMPORTAÇÃO ---------- */
+const store = { fut:null, bov:null };
+const norm = s => String(s==null?'':s).trim();
+const up = s => norm(s).toUpperCase();
+function colIndex(header, names){ const H=header.map(up); for(const n of names){ const i=H.indexOf(up(n)); if(i>=0) return i; } return -1; }
+function parseRows(rows){
+  if(!rows||!rows.length) return null;
+  const header=rows[0];
+  const iCon=colIndex(header,['CONTRATOS']); const iVol=colIndex(header,['Volume']);
+  const isFut=iCon>=0;
+  const iAss=colIndex(header,['ASSESSOR','Assessor']);
+  const iAtv=colIndex(header,['ATIVO','Ativo']);
+  const iConta=colIndex(header,['CONTA SINACOR','Código','Codigo']);
+  if(iAss<0||iConta<0) return null;
+  const byAssessor={};
+  for(let r=1;r<rows.length;r++){
+    const row=rows[r]; if(!row) continue;
+    const ass=norm(row[iAss]); if(!ass) continue;
+    const conta=norm(row[iConta]); if(!conta) continue;
+    if(!byAssessor[ass]) byAssessor[ass]={contas:{}};
+    const A=byAssessor[ass];
+    if(isFut) A.contas[conta]=(A.contas[conta]||0)+(Number(row[iCon])||0)*multOf(row[iAtv]);
+    else A.contas[conta]=(A.contas[conta]||0)+(Number(row[iVol])||0)/4000;
+  }
+  return {isFut,byAssessor};
+}
+async function readFile(file, slot, tEl, sEl, dropEl){
+  sEl.textContent='lendo…';
+  try{
+    const buf = await file.arrayBuffer();
+    let rows;
+    if(/\.csv$/i.test(file.name)) rows = parseCSV(new TextDecoder().decode(new Uint8Array(buf)));
+    else rows = await readXlsx(buf);
+    const parsed = parseRows(rows);
+    if(!parsed){ sEl.textContent='formato não reconhecido'; return; }
+    store[slot]=parsed.byAssessor;
+    dropEl.classList.add('loaded');
+    tEl.textContent=parsed.isFut?'Futuros ✓':'Bovespa ✓';
+    sEl.textContent=file.name;
+    rebuildAssessores();
+  }catch(err){ sEl.textContent='erro ao ler arquivo'; console.error(err); }
+}
+document.getElementById('fileFut').addEventListener('change',e=>{ if(e.target.files[0]) readFile(e.target.files[0],'fut',futT,futS,dropFut); });
+document.getElementById('fileBov').addEventListener('change',e=>{ if(e.target.files[0]) readFile(e.target.files[0],'bov',bovT,bovS,dropBov); });
 
-/* ===================== CALCULADORA (wizard visual + lógica por faixa) ===================== */
-const asList = document.getElementById('asList');
+function allAssessores(){
+  const set=new Set();
+  ['fut','bov'].forEach(s=>{ if(store[s]) Object.keys(store[s]).forEach(a=>{ if(a && a.toUpperCase()!=='NONE') set.add(a); }); });
+  return [...set].sort();
+}
+const selected = new Set();       // bases marcadas
+let lastClients = [];             // [{conta, pts, faixaIdx, bonus}] para o export CSV
+
+function rebuildAssessores(){
+  const list=allAssessores();
+  const box=document.getElementById('impSel');
+  const cont=document.getElementById('assList');
+  if(!list.length){ box.classList.remove('show'); return; }
+  box.classList.add('show');
+  cont.innerHTML = list.map(a=>{
+    const on = selected.has(a);
+    return `<div class="ms-item ${on?'on':''}" data-ass="${a.replace(/"/g,'&quot;')}">
+      <span class="ms-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#04150C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="ms-name">${a}</span></div>`;
+  }).join('');
+  cont.querySelectorAll('.ms-item').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const a=el.dataset.ass;
+      if(selected.has(a)){ selected.delete(a); el.classList.remove('on'); }
+      else { selected.add(a); el.classList.add('on'); }
+      recalcFromSelection();
+    });
+  });
+}
+
+function recalcFromSelection(){
+  const info=document.getElementById('impInfo');
+  if(!selected.size){ info.textContent=''; return; }
+  // agrega pontos por conta de TODAS as bases marcadas (soma os dois arquivos), guardando a barra
+  const pts={}, barraOf={};
+  selected.forEach(ass=>{
+    ['fut','bov'].forEach(s=>{ const A=store[s]&&store[s][ass]; if(!A) return; for(const c in A.contas){ pts[c]=(pts[c]||0)+A.contas[c]; barraOf[c]=ass; } });
+  });
+  const counts=new Array(BRACKETS.length).fill(0); let clientes=0;
+  lastClients=[];
+  for(const c in pts){
+    const i=brIndexOf(pts[c]);
+    if(i>=0) counts[i]++;
+    clientes++;
+    lastClients.push({conta:c, barra:barraOf[c]||'', pts:Math.round(pts[c]), faixa:i>=0?BRACKETS[i].label:'< 1.000', bonus:i>=0?BRACKETS[i].bonus:0});
+  }
+  lastClients.sort((a,b)=>b.pts-a.pts);
+  asList.innerHTML='';
+  counts.forEach((c,i)=>{ if(c>0){ faixaRow(); const last=asList.lastElementChild;
+    last.querySelector('.as-sel').value=i; last.querySelector('.as-qty').value=c;
+    last.querySelector('.as-pts b').textContent=money(c*BRACKETS[i].bonus); } });
+  if(!asList.children.length) faixaRow();
+  const bonus=counts.reduce((s,c,i)=>s+c*BRACKETS[i].bonus,0);
+  const nomes = [...selected].join(' + ');
+  info.innerHTML=`<b>${selected.size}</b> base(s): ${nomes} · <b>${num(clientes)}</b> clientes · bônus <b>${money(bonus)}</b>`;
+  wzTotalBonus();
+}
+
+/* reabrir cenário removido */
+
+/* ---------- FAIXAS (igual ao dash) ---------- */
+const asList=document.getElementById('asList');
 function faixaRow(){
-  const row = document.createElement('div');
-  row.className='as-row';
-  row.innerHTML = `
-    <select class="as-sel">${BRACKETS.map((b,i)=>`<option value="${i}">${b.label}</option>`).join('')}</select>
-    <input class="wz-input as-qty" type="number" min="0" placeholder="Nº de clientes">
+  const row=document.createElement('div'); row.className='as-row';
+  row.innerHTML=`
+    <select class="as-sel select">${BRACKETS.map((b,i)=>`<option value="${i}">${b.label}</option>`).join('')}</select>
+    <input class="wz-input as-qty" type="number" min="0" placeholder="Nº clientes">
     <div class="as-pts">= <b>R$ 0</b></div>
     <button class="as-del" title="Remover"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>`;
   const sel=row.querySelector('.as-sel'), qty=row.querySelector('.as-qty'), pts=row.querySelector('.as-pts b');
-  function upd(){ pts.textContent = money((+qty.value||0)*BRACKETS[+sel.value].bonus); wzTotalBonus(); }
+  const upd=()=>{ pts.textContent=money((+qty.value||0)*BRACKETS[+sel.value].bonus); wzTotalBonus(); };
   sel.addEventListener('change',upd); qty.addEventListener('input',upd);
-  row.querySelector('.as-del').addEventListener('click',()=>{
-    if(asList.children.length>1){ row.remove(); wzTotalBonus(); }
-  });
+  row.querySelector('.as-del').addEventListener('click',()=>{ if(asList.children.length>1){ row.remove(); wzTotalBonus(); } });
   asList.appendChild(row);
 }
 function wzScenario(){
-  let gross=0, clients=0;
-  asList.querySelectorAll('.as-row').forEach(r=>{
-    const c=+r.querySelector('.as-qty').value||0, b=BRACKETS[+r.querySelector('.as-sel').value].bonus;
-    gross += c*b; clients += c;
-  });
-  return {gross, clients};
+  let gross=0,clients=0;
+  asList.querySelectorAll('.as-row').forEach(r=>{ const c=+r.querySelector('.as-qty').value||0, b=BRACKETS[+r.querySelector('.as-sel').value].bonus; gross+=c*b; clients+=c; });
+  return {gross,clients};
 }
-function wzTotalBonus(){
-  const s = wzScenario();
-  document.getElementById('asTotal').textContent = num(s.clients);
-  document.getElementById('asTotalBonus').textContent = money(s.gross);
-  return s;
-}
+function wzTotalBonus(){ const s=wzScenario(); document.getElementById('asTotal').textContent=num(s.clients); document.getElementById('asTotalBonus').textContent=money(s.gross); return s; }
 faixaRow();
-document.getElementById('asAdd').addEventListener('click', faixaRow);
+document.getElementById('asAdd').addEventListener('click',faixaRow);
+document.getElementById('tpGrid').innerHTML=BRACKETS.map(b=>`<div class="tp-cell"><div class="tc">${b.label}</div><div class="tm">${money(b.bonus)}</div></div>`).join('');
 
-// tabela de referência (faixa → bônus) no lugar da "tabela de pontuação"
-document.getElementById('tpGrid').innerHTML = BRACKETS.map(b=>`
-  <div class="tp-cell"><div class="tc">${b.label}</div><div class="tm">${money(b.bonus)}</div></div>`).join('');
-
-// navegação entre etapas
+/* ---------- NAV ---------- */
 function goStep(n){
-  document.querySelectorAll('.wz-pane').forEach(p=>p.classList.toggle('active', +p.dataset.pane===n));
-  document.querySelectorAll('.wz-dot').forEach(d=>{
-    const s=+d.dataset.step;
-    d.classList.toggle('active', s===n);
-    d.classList.toggle('done', s<n);
-  });
-  document.querySelectorAll('.wz-conn').forEach(c=>c.classList.toggle('done', +c.dataset.conn < n));
+  document.querySelectorAll('.wz-pane').forEach(p=>p.classList.toggle('active',+p.dataset.pane===n));
+  document.querySelectorAll('.wz-dot').forEach(d=>{ const s=+d.dataset.step; d.classList.toggle('active',s===n); d.classList.toggle('done',s<n); });
+  document.querySelectorAll('.wz-conn').forEach(c=>c.classList.toggle('done',+c.dataset.conn<n));
   if(n===3) wzResult();
 }
-document.querySelectorAll('.calc [data-go]').forEach(btn=>{
-  btn.addEventListener('click', ()=> goStep(+btn.dataset.go));
-});
-
-// resultado (etapa 3)
+document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>goStep(+b.dataset.go)));
 function wzResult(){
-  const {gross, clients} = wzScenario();
-  const unit = +document.getElementById('wzUnit').value||0;
-  const qty  = +document.getElementById('wzQty').value||0;
-  const tax  = (+document.getElementById('wzTax').value||0)/100;
-  const platTotal = unit*qty, imp = gross*tax, liq = gross - platTotal - imp;
-  document.getElementById('wzFaixa').textContent = num(clients)+' clientes';
-  document.getElementById('wzBruto').textContent = money(gross);
-  document.getElementById('wzPlat').textContent = '− '+money(platTotal);
-  document.getElementById('wzImp').textContent = '− '+money(imp);
-  document.getElementById('wzLiq').textContent = money(liq);
+  const {gross,clients}=wzScenario();
+  const unit=+document.getElementById('wzUnit').value||0;
+  const qty=+document.getElementById('wzQty').value||0;
+  const tax=(+document.getElementById('wzTax').value||0)/100;
+  const plat=unit*qty, imp=gross*tax, liq=gross-plat-imp;
+  document.getElementById('wzFaixa').textContent=num(clients)+' clientes';
+  document.getElementById('wzBruto').textContent=money(gross);
+  document.getElementById('wzPlat').textContent='− '+money(plat);
+  document.getElementById('wzImp').textContent='− '+money(imp);
+  document.getElementById('wzLiq').textContent=money(liq);
 }
-document.getElementById('wzReset').addEventListener('click', ()=>{
-  asList.innerHTML=''; faixaRow(); wzTotalBonus(); goStep(1);
-});
+document.getElementById('wzReset').addEventListener('click',()=>{ asList.innerHTML=''; faixaRow(); wzTotalBonus(); selected.clear(); document.querySelectorAll('.ms-item.on').forEach(el=>el.classList.remove('on')); goStep(1); });
 
-// pré-carrega o parceiro atual como ponto de partida
-document.getElementById('wzLoad').addEventListener('click', ()=>{
-  const p = PARTNERS[current];
-  asList.innerHTML='';
-  if(p.dist){
-    p.dist.forEach((c,i)=>{ if(c>0){ faixaRow(); const last=asList.lastElementChild;
-      last.querySelector('.as-sel').value=i; last.querySelector('.as-qty').value=c;
-      last.querySelector('.as-pts b').textContent=money(c*BRACKETS[i].bonus); } });
-  }
-  if(!asList.children.length) faixaRow();
-  document.getElementById('wzUnit').value=Math.round(p.t.plat);
-  document.getElementById('wzQty').value=1;
-  wzTotalBonus();
-});
-
-/* ===================== CLOCK ===================== */
-function tick(){
-  const d=new Date();
-  document.getElementById('clock').textContent = d.toLocaleTimeString('pt-BR');
+/* ---------- EXPORTAR ---------- */
+function download(filename, content, type){
+  const blob=new Blob([content],{type});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download=filename; document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
 }
-tick(); setInterval(tick,1000);
-
-/* ===================== TOGGLES (expandir/recolher) ===================== */
-(function(){
-  function bind(btnId, wrapId, openTxt, closeTxt){
-    const toggle = document.getElementById(btnId);
-    const wrap = document.getElementById(wrapId);
-    toggle.addEventListener('click', ()=>{
-      const open = toggle.classList.toggle('open');
-      wrap.style.maxHeight = open ? wrap.scrollHeight+'px' : '0px';
-      toggle.querySelector('span').textContent = open ? closeTxt : openTxt;
-    });
-  }
-  bind('ddToggle', 'ddWrap', 'Ver detalhamento por faixa', 'Ocultar detalhamento');
-  bind('ruleToggle', 'ruleWrap', 'Ver tabela de bonificação (Clube Trader)', 'Ocultar tabela de bonificação');
-})();
-
-/* ===================== INIT ===================== */
-render(0);
+function currentScenario(){
+  const faixas=[];
+  asList.querySelectorAll('.as-row').forEach(r=>{ const i=+r.querySelector('.as-sel').value, c=+r.querySelector('.as-qty').value||0; if(c>0) faixas.push({i,c}); });
+  return {
+    nome:[...selected].join(' + ')||'cenário',
+    bases:[...selected],
+    faixas,
+    custos:{ unit:+document.getElementById('wzUnit').value||0, qty:+document.getElementById('wzQty').value||0, tax:+document.getElementById('wzTax').value||0 },
+    clientes:lastClients
+  };
+}
+document.getElementById('expCsv').addEventListener('click', ()=>{
+  if(!lastClients.length){ alert('Importe uma base primeiro para exportar os clientes.'); return; }
+  const head='Conta;Pontos;Faixa;Bonus';
+  const lines=lastClients.map(c=>`${c.conta};${c.pts};${c.faixa};${String(c.bonus).replace('.',',')}`);
+  download('clientes_'+([...selected].join('_')||'base')+'.csv', '\ufeff'+head+'\n'+lines.join('\n'), 'text/csv;charset=utf-8');
+});
+document.getElementById('expScen').addEventListener('click', ()=>{
+  download('cenario_'+([...selected].join('_')||'calc')+'.json', JSON.stringify(currentScenario(),null,2), 'application/json');
+});
+document.getElementById('expReport').addEventListener('click', ()=>{
+  if(!lastClients.length){ alert('Importe uma base primeiro para gerar o relatório.'); return; }
+  const head='Sinacor;Barra;Pontos;Valor';
+  const lines=lastClients.map(c=>`${c.conta};${c.barra};${c.pts};${String(c.bonus).replace('.',',')}`);
+  download('relatorio_clientes_'+([...selected].join('_')||'base')+'.csv', '\ufeff'+head+'\n'+lines.join('\n'), 'text/csv;charset=utf-8');
+});
 </script>
 </body>
 </html>
