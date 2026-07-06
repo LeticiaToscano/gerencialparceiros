@@ -494,7 +494,7 @@ body::before{
         <div class="ds-left">
           <div class="ds-eyebrow">Bônus bruto no mês</div>
           <div class="ds-big" id="dsBig">R$ 0</div>
-          <div class="ds-meta"><b id="dsCli">0</b> clientes · ticket médio <b id="dsTicket">R$ 0</b></div>
+          <div class="ds-meta"><b id="dsCli">0</b> ativos · <b id="dsComBonus">0</b> com bônus · <b id="dsSemBonus">0</b> abaixo de 1.000 pts</div>
           <div class="ds-insight" id="dsInsight"></div>
         </div>
         <div class="ds-right">
@@ -640,7 +640,7 @@ const PARTNERS = [
     t:{rec:49666.79, retido:3302.84, plat:26986.09, bonus:40350.00, total:59727.86, imp:11688.74, liq:48039.12} },
   { id:'61390582', color:'var(--cyan)', tier:'Consolidado', platName:'Todas as plataformas',
     contratos:445492, zeragem:1376, clientes:193,
-    dist:null,
+    dist:[0,0,0,1,0,1,1,6,11,29],
     t:{rec:9182.75, retido:610.65, plat:6288.00, bonus:16900.00, total:19184.10, imp:3754.33, liq:15429.77} },
   { id:'47205169', color:'#38BDF8', tier:'Em expansão', platName:'Todas as plataformas',
     contratos:100759, zeragem:1657, clientes:10,
@@ -730,7 +730,10 @@ function render(idx){
   const ddRows = document.getElementById('ddRows');
   document.getElementById('dsBig') && animateEl(document.getElementById('dsBig'), d.bonus, v=>money(v), 1400);
   document.getElementById('dsCli').textContent = d.clients!=null ? num(d.clients) : '—';
-  document.getElementById('dsTicket').textContent = d.clients!=null ? money(d.ticket) : '—';
+  const comBonus = d.hasDist ? d.faixaClients : null;
+  const semBonus = (d.clients!=null && comBonus!=null) ? Math.max(d.clients - comBonus, 0) : null;
+  document.getElementById('dsComBonus').textContent = comBonus!=null ? num(comBonus) : '—';
+  document.getElementById('dsSemBonus').textContent = semBonus!=null ? num(semBonus) : '—';
 
   if(d.hasDist){
     const contrib = d.rows.filter(r=>r.sub>0).sort((a,b)=>b.sub-a.sub);
