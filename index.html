@@ -232,6 +232,8 @@ body::before{
 .dd-bar{height:5px;border-radius:3px;background:rgba(255,255,255,.05);overflow:hidden}
 .dd-bar span{display:block;height:100%;width:0;border-radius:3px;transition:width .9s cubic-bezier(.16,1,.3,1)}
 .dd-cli{font-family:'Sora';font-weight:600;font-size:13px;color:var(--txt-2);font-variant-numeric:tabular-nums}
+.dd-row.off{opacity:.55}
+.dd-row.off .dd-sub{color:var(--txt-3)}
 .dd-sub{font-family:'Sora';font-weight:700;font-size:14px;color:var(--green);font-variant-numeric:tabular-nums}
 .dd-pct{font-size:12px;color:var(--txt-3);font-variant-numeric:tabular-nums}
 
@@ -766,7 +768,7 @@ function render(idx){
 
     const colors = contrib.map((_,i)=> lerpColor(C_GREEN, C_CYAN, nseg>1 ? i/(nseg-1) : 0));
     const maxSub = contrib.length ? contrib[0].sub : 1;
-    ddRows.innerHTML = contrib.map((r,i)=>{
+    let ddHtml = contrib.map((r,i)=>{
       const share = r.sub/gb*100;
       return `<div class="dd-row">
         <div class="dd-faixa"><span class="dddot" style="background:${colors[i]}"></span><span>${r.label}</span></div>
@@ -776,6 +778,18 @@ function render(idx){
         <div class="dd-pct r">${share.toFixed(1)}%</div>
       </div>`;
     }).join('');
+    // linha dos clientes abaixo de 1.000 pontos (sem bônus)
+    const semBonusN = (d.clients!=null) ? Math.max(d.clients - d.faixaClients, 0) : null;
+    if(semBonusN!=null){
+      ddHtml += `<div class="dd-row off">
+        <div class="dd-faixa"><span class="dddot" style="background:var(--txt-3)"></span><span>abaixo de 1.000 pts</span></div>
+        <div class="dd-bar"></div>
+        <div class="dd-cli r">${num(semBonusN)}</div>
+        <div class="dd-sub r">R$ 0</div>
+        <div class="dd-pct r">—</div>
+      </div>`;
+    }
+    ddRows.innerHTML = ddHtml;
     document.getElementById('fFaixas').textContent = nseg;
   } else {
     // parceiro sem detalhamento por faixa carregado
