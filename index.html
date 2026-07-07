@@ -796,20 +796,21 @@ function render(idx){
 
     const colors = contrib.map((_,i)=> lerpColor(C_GREEN, C_CYAN, nseg>1 ? i/(nseg-1) : 0));
     const maxSub = contrib.length ? contrib[0].sub : 1;
+    const baseCli = d.clients || contrib.reduce((s,r)=>s+r.count,0) || 1;
     let ddHtml = contrib.map((r,i)=>{
-      const share = r.sub/gb*100;
+      const pctCli = r.count/baseCli*100;
       return `<div class="dd-row">
         <div class="dd-faixa"><span class="dddot" style="background:${colors[i]}"></span><span>${r.label}</span></div>
         <div class="dd-bar"><span style="width:${(r.sub/maxSub*100).toFixed(1)}%;background:${colors[i]}"></span></div>
         <div class="dd-cli r">${num(r.count)}</div>
         <div class="dd-sub r">${money(r.sub)}</div>
-        <div class="dd-pct r">${share.toFixed(1)}%</div>
+        <div class="dd-pct r">${pctCli.toFixed(1)}%</div>
       </div>`;
     }).join('');
     // linha dos clientes abaixo de 1.000 pontos (sem bônus)
     const semBonusN = (d.clients!=null) ? Math.max(d.clients - d.faixaClients, 0) : null;
     if(semBonusN!=null){
-      const pctBase = d.clients>0 ? (semBonusN/d.clients*100) : 0;
+      const pctBase = semBonusN/baseCli*100;
       ddHtml += `<div class="dd-row off">
         <div class="dd-faixa"><span class="dddot" style="background:var(--txt-3)"></span><span>abaixo de 1.000 pts</span></div>
         <div class="dd-bar"></div>
