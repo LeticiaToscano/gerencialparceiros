@@ -328,6 +328,11 @@ body::before{
 .tp-cell .tm{font-family:'Sora';font-weight:700;font-size:13px;color:var(--green)}
 /* params (etapa 2) */
 .wz-fields{display:flex;flex-direction:column;gap:16px}
+.wz-custo{padding:12px 14px;border-radius:11px;background:rgba(0,230,118,.05);border:1px solid rgba(0,230,118,.15);font-size:13px;color:var(--txt-2)}
+.wz-custo b{font-family:'Sora';font-weight:700;color:var(--green);font-size:15px}
+.wz-res-row.sub2{background:rgba(255,255,255,.02)}
+.wz-res-row.sub2 .rk{color:var(--txt);font-weight:600}
+.wz-res-row.sub2 .rv{color:var(--txt);font-weight:700}
 .wz-field label{display:block;font-size:11px;color:var(--txt-3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
 .wz-field .suffix{position:relative}
 .wz-field .suffix span{position:absolute;right:16px;top:50%;transform:translateY(-50%);color:var(--txt-3);font-size:13px;pointer-events:none}
@@ -416,7 +421,7 @@ body::before{
     <div class="card hero-stats">
       <div class="hstat"><div class="k">Clientes ativos</div><div class="v c" id="stCli">0</div><div class="u">contas operando</div></div>
       <div class="hstat"><div class="k">Contratos no mês</div><div class="v" id="stCon">0</div><div class="u">volume total</div></div>
-      <div class="hstat"><div class="k">Bônus bruto</div><div class="v g" id="stBruto">R$ 0</div><div class="u">antes de custos</div></div>
+      <div class="hstat"><div class="k">Bonificação líquida</div><div class="v g" id="stBruto">R$ 0</div><div class="u">no mês</div></div>
       <div class="hstat"><div class="k">Zeragem</div><div class="v g" id="stTicket">0</div><div class="u">contratos</div></div>
     </div>
 
@@ -426,7 +431,6 @@ body::before{
         <div>
           <div class="liq-label">● Bonificação líquida no mês</div>
           <div class="liq-big" id="liqBig">R$ 0</div>
-          <div class="liq-note">Já com todas as deduções aplicadas. Este é o valor que cai, de fato, no bolso do parceiro.</div>
         </div>
         <div class="waterfall">
           <div class="wf-row add"><span class="wl"><span class="ic">%</span> Receitas gerais</span><span class="wv" id="wfRec">R$ 0</span></div>
@@ -549,12 +553,14 @@ body::before{
           <div class="wz-step"><div class="wz-dot" data-step="2">2</div></div>
           <div class="wz-conn" data-conn="2"></div>
           <div class="wz-step"><div class="wz-dot" data-step="3">3</div></div>
+          <div class="wz-conn" data-conn="3"></div>
+          <div class="wz-step"><div class="wz-dot" data-step="4">4</div></div>
         </div>
 
         <!-- ETAPA 1 -->
         <div class="wz-pane active" data-pane="1">
           <div class="wz-head">
-            <div class="wz-title">Etapa 1 de 3</div>
+            <div class="wz-title">Etapa 1 de 4</div>
             <div class="wz-sub">Informe o <b>nº de clientes</b> em cada faixa de contratos</div>
           </div>
           <div id="asList"></div>
@@ -573,15 +579,18 @@ body::before{
         <!-- ETAPA 2 -->
         <div class="wz-pane" data-pane="2">
           <div class="wz-head">
-            <div class="wz-title">Etapa 2 de 3</div>
+            <div class="wz-title">Etapa 2 de 4</div>
             <div class="wz-sub">Informe os <b>custos</b> da operação</div>
           </div>
           <div class="wz-fields">
-            <div class="wz-field"><label>Custo por licença de plataforma</label>
-              <div class="suffix"><input class="wz-input" type="number" id="wzUnit" value="280" min="0"><span>R$</span></div></div>
+            <div class="wz-field"><label>Plataforma</label>
+              <select class="wz-input" id="wzPlatSel"></select></div>
+            <div class="wz-field"><label>Automação</label>
+              <select class="wz-input" id="wzAutoSel"></select></div>
             <div class="wz-field"><label>Nº de licenças contratadas</label>
               <input class="wz-input" type="number" id="wzQty" value="1" min="0"></div>
-            <div class="wz-field"><label>Imposto sobre o bônus</label>
+            <div class="wz-custo" id="wzCusto">Custo por licença: <b>R$ 0,00</b></div>
+            <div class="wz-field"><label>Imposto sobre o total</label>
               <div class="suffix"><input class="wz-input" type="number" id="wzTax" value="19.57" min="0" step="0.01"><span>%</span></div></div>
           </div>
           <div class="wz-nav">
@@ -590,15 +599,34 @@ body::before{
           </div>
         </div>
 
-        <!-- ETAPA 3 -->
+        <!-- ETAPA 3 · RECEITAS GERAIS (zeragem) -->
         <div class="wz-pane" data-pane="3">
           <div class="wz-head">
-            <div class="wz-title">Etapa 3 de 3</div>
+            <div class="wz-title">Etapa 3 de 4</div>
+            <div class="wz-sub">Informe o <b>nº de contratos</b> para as receitas gerais</div>
+          </div>
+          <div class="wz-fields">
+            <div class="wz-field"><label>Nº de contratos</label>
+              <input class="wz-input" type="number" id="wzZerN" value="0" min="0"></div>
+            <div class="wz-total" style="margin-top:0"><span class="k">Receitas gerais:</span><span class="v" id="wzZerVal">R$ 0</span></div>
+          </div>
+          <div class="wz-nav">
+            <button class="btn btn-ghost" data-go="2">Voltar</button>
+            <button class="btn btn-primary" data-go="4">Calcular</button>
+          </div>
+        </div>
+
+        <!-- ETAPA 4 · RESULTADO -->
+        <div class="wz-pane" data-pane="4">
+          <div class="wz-head">
+            <div class="wz-title">Etapa 4 de 4</div>
             <div class="wz-sub">Resultado da simulação</div>
           </div>
           <div class="wz-res-wf">
             <div class="wz-res-row faixa"><span class="rk">Clientes no cenário</span><span class="rv" id="wzFaixa">—</span></div>
             <div class="wz-res-row"><span class="rk">Bônus bruto</span><span class="rv" id="wzBruto">R$ 0</span></div>
+            <div class="wz-res-row"><span class="rk">+ Receitas gerais</span><span class="rv" id="wzZerRes">R$ 0</span></div>
+            <div class="wz-res-row sub2"><span class="rk">= Total</span><span class="rv" id="wzTotalRes">R$ 0</span></div>
             <div class="wz-res-row neg"><span class="rk">− Plataforma</span><span class="rv" id="wzPlat">R$ 0</span></div>
             <div class="wz-res-row neg"><span class="rk">− Imposto</span><span class="rv" id="wzImp">R$ 0</span></div>
           </div>
@@ -607,7 +635,7 @@ body::before{
             <div class="lv" id="wzLiq">R$ 0</div>
           </div>
           <div class="wz-nav">
-            <button class="btn btn-ghost" data-go="2">Voltar</button>
+            <button class="btn btn-ghost" data-go="3">Voltar</button>
             <button class="btn btn-ghost" id="wzReset">Recomeçar</button>
           </div>
         </div>
@@ -712,7 +740,7 @@ function render(idx){
 
   document.getElementById('stCli').textContent = d.clients!=null ? num(d.clients) : '—';
   animateEl(document.getElementById('stCon'), d.contracts, v=>num(v));
-  animateEl(document.getElementById('stBruto'), d.bonus, v=>money(v));
+  animateEl(document.getElementById('stBruto'), d.liquido, v=>money(v));
   animateEl(document.getElementById('stTicket'), d.zeragem, v=>num(v));
 
   // cascata oficial (coluna Parceiro)
@@ -781,12 +809,13 @@ function render(idx){
     // linha dos clientes abaixo de 1.000 pontos (sem bônus)
     const semBonusN = (d.clients!=null) ? Math.max(d.clients - d.faixaClients, 0) : null;
     if(semBonusN!=null){
+      const pctBase = d.clients>0 ? (semBonusN/d.clients*100) : 0;
       ddHtml += `<div class="dd-row off">
         <div class="dd-faixa"><span class="dddot" style="background:var(--txt-3)"></span><span>abaixo de 1.000 pts</span></div>
         <div class="dd-bar"></div>
         <div class="dd-cli r">${num(semBonusN)}</div>
         <div class="dd-sub r">R$ 0</div>
-        <div class="dd-pct r">—</div>
+        <div class="dd-pct r">${pctBase.toFixed(1)}%</div>
       </div>`;
     }
     ddRows.innerHTML = ddHtml;
@@ -887,34 +916,74 @@ document.getElementById('tpGrid').innerHTML = BRACKETS.map(b=>`
 
 // navegação entre etapas
 function goStep(n){
-  document.querySelectorAll('.wz-pane').forEach(p=>p.classList.toggle('active', +p.dataset.pane===n));
-  document.querySelectorAll('.wz-dot').forEach(d=>{
+  document.querySelectorAll('.calc .wz-pane').forEach(p=>p.classList.toggle('active', +p.dataset.pane===n));
+  document.querySelectorAll('.calc .wz-dot').forEach(d=>{
     const s=+d.dataset.step;
     d.classList.toggle('active', s===n);
     d.classList.toggle('done', s<n);
   });
-  document.querySelectorAll('.wz-conn').forEach(c=>c.classList.toggle('done', +c.dataset.conn < n));
-  if(n===3) wzResult();
+  document.querySelectorAll('.calc .wz-conn').forEach(c=>c.classList.toggle('done', +c.dataset.conn < n));
+  if(n===4) wzResult();
 }
 document.querySelectorAll('.calc [data-go]').forEach(btn=>{
   btn.addEventListener('click', ()=> goStep(+btn.dataset.go));
 });
 
-// resultado (etapa 3)
+/* plataforma e automação (nome + custo por licença) */
+const PLATAFORMAS = [
+  {nome:'Nenhuma', custo:0},
+  {nome:'Profit One', custo:12.85},
+  {nome:'Profit Plus', custo:24.35},
+  {nome:'Profit Pro', custo:35.10},
+];
+const AUTOMACOES = [
+  {nome:'Nenhuma', custo:0},
+  {nome:'Automação Basic', custo:34.81},
+  {nome:'Automação Plus', custo:96.25},
+  {nome:'Automação Premium', custo:147.42},
+];
+const brl = n => n.toLocaleString('pt-BR',{minimumFractionDigits:2, maximumFractionDigits:2});
+function fillWzSelect(id, opts){
+  document.getElementById(id).innerHTML = opts.map((o,i)=>`<option value="${i}">${o.nome}${o.custo>0?` (R$ ${brl(o.custo)})`:''}</option>`).join('');
+}
+fillWzSelect('wzPlatSel', PLATAFORMAS);
+fillWzSelect('wzAutoSel', AUTOMACOES);
+function wzCustoUnit(){
+  return PLATAFORMAS[+document.getElementById('wzPlatSel').value||0].custo
+       + AUTOMACOES[+document.getElementById('wzAutoSel').value||0].custo;
+}
+function updateWzCusto(){ document.getElementById('wzCusto').innerHTML = `Custo por licença: <b>R$ ${brl(wzCustoUnit())}</b>`; }
+document.getElementById('wzPlatSel').addEventListener('change', updateWzCusto);
+document.getElementById('wzAutoSel').addEventListener('change', updateWzCusto);
+updateWzCusto();
+
+/* receitas gerais (zeragem): nº de contratos × R$5 (×5 oculto) */
+const ZER_UNIT = 5;
+function updateWzZer(){
+  const n = +document.getElementById('wzZerN').value||0;
+  document.getElementById('wzZerVal').textContent = money(n*ZER_UNIT);
+}
+document.getElementById('wzZerN').addEventListener('input', updateWzZer);
+
+// resultado (etapa 4)
 function wzResult(){
   const {gross, clients} = wzScenario();
-  const unit = +document.getElementById('wzUnit').value||0;
+  const unit = wzCustoUnit();
   const qty  = +document.getElementById('wzQty').value||0;
   const tax  = (+document.getElementById('wzTax').value||0)/100;
-  const platTotal = unit*qty, imp = gross*tax, liq = gross - platTotal - imp;
+  const receitasGerais = (+document.getElementById('wzZerN').value||0)*ZER_UNIT;
+  const total = gross + receitasGerais;
+  const platTotal = unit*qty, imp = total*tax, liq = total - platTotal - imp;
   document.getElementById('wzFaixa').textContent = num(clients)+' clientes';
   document.getElementById('wzBruto').textContent = money(gross);
+  document.getElementById('wzZerRes').textContent = '+ '+money(receitasGerais);
+  document.getElementById('wzTotalRes').textContent = money(total);
   document.getElementById('wzPlat').textContent = '− '+money(platTotal);
   document.getElementById('wzImp').textContent = '− '+money(imp);
   document.getElementById('wzLiq').textContent = money(liq);
 }
 document.getElementById('wzReset').addEventListener('click', ()=>{
-  asList.innerHTML=''; faixaRow(); wzTotalBonus(); goStep(1);
+  asList.innerHTML=''; faixaRow(); wzTotalBonus(); document.getElementById('wzZerN').value=0; updateWzZer(); goStep(1);
 });
 
 // pré-carrega o parceiro atual como ponto de partida
@@ -927,8 +996,9 @@ document.getElementById('wzLoad').addEventListener('click', ()=>{
       last.querySelector('.as-pts b').textContent=money(c*BRACKETS[i].bonus); } });
   }
   if(!asList.children.length) faixaRow();
-  document.getElementById('wzUnit').value=Math.round(p.t.plat);
   document.getElementById('wzQty').value=1;
+  document.getElementById('wzZerN').value = p.zeragem || 0;
+  updateWzZer();
   wzTotalBonus();
 });
 
